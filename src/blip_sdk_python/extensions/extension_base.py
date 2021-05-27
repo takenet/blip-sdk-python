@@ -27,8 +27,7 @@ class ExtensionBase:
             Command
         """
         command = Command(CommandMethod.GET, uri)
-        id = id if id else str(uuid4())
-        command.id = command
+        command.id = id if id else str(uuid4())
 
         if self.to:
             command.to = self.to
@@ -54,8 +53,7 @@ class ExtensionBase:
             Command
         """
         command = Command(CommandMethod.SET, uri, type_n, resource)
-        id = id if id else str(uuid4())
-        command.id = command
+        command.id = id if id else str(uuid4())
 
         if self.to:
             command.to = self.to
@@ -81,8 +79,7 @@ class ExtensionBase:
             Command
         """
         command = Command(CommandMethod.MERGE, uri, type_n, resource)
-        id = id if id else str(uuid4())
-        command.id = command
+        command.id = id if id else str(uuid4())
 
         if self.to:
             command.to = self.to
@@ -104,8 +101,7 @@ class ExtensionBase:
             Command
         """
         command = Command(CommandMethod.DELETE, uri)
-        id = id if id else str(uuid4())
-        command.id = command
+        command.id = id if id else str(uuid4())
 
         if self.to:
             command.to = self.to
@@ -125,7 +121,6 @@ class ExtensionBase:
             Command: the response
         """
         command.id = command.id if command.id else str(uuid4())
-
         return await self.client.process_command_async(command)
 
     def build_resource_query(
@@ -144,7 +139,7 @@ class ExtensionBase:
         """
         if not uri.endswith('?'):
             uri += '?'  # noqa: WPS336
-        return f'{uri}{urlencode(query)}'
+        return f'{uri}{urlencode(query, quote_via=quote)}'
 
     def build_uri(self, uri: str, **kwargs: dict) -> str:
         """Build a uri with parameters.
