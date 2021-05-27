@@ -19,7 +19,7 @@ setup(
     keywords=[
         'lime',
         'blip',
-        'chatbot'
+        'chatbot',
         'sdk'
     ],
     install_requires=[
