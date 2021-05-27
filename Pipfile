@@ -1,0 +1,26 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+
+[packages]
+wemake-python-styleguide = "*"
+autopep8 = "*"
+pep8 = "*"
+pytest = "*"
+pytest-cov = "*"
+isort = "*"
+pytest-asyncio = "*"
+pytest-mock = "*"
+lime-python = "*"
+lime-transport-websocket = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+test-cov = "pytest -vvv --cache-clear --cov-report xml:coverage-reports/coverage-sdk.xml --cov=src tests/"
+test-lint = "flake8 . --count --show-source --statistics"
