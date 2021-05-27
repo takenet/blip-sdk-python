@@ -130,7 +130,7 @@ class TestExtensionBase:
         mocker.patch.object(
             target.client,
             'process_command_async',
-            return_value=expected_result
+            return_value=self.__async_result(expected_result)
         )
 
         # Act
@@ -143,6 +143,9 @@ class TestExtensionBase:
 
     def get_target(self) -> ExtensionBase:
         return ExtensionBase(DummyClient())
+
+    async def __async_result(self, result):
+        return result
 
 
 class DummyClient:
