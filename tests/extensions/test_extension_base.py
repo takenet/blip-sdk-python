@@ -11,14 +11,14 @@ class TestExtensionBase:
     def test_build_uri(self) -> None:
         # Arrange
         target = self.get_target()
-        template_uri = 'https://take.net/{{team}}/{{person}}'
+        template_uri = 'https://take.net/{0}/{1}'
         expected_uri = 'https://take.net/solutions%20lab/gabriel'  # noqa: WPS323, E501
 
         # Act
         result = target.build_uri(
             template_uri,
-            team='solutions lab',
-            person='gabriel'
+            'solutions lab',
+            'gabriel'
         )
 
         # Assert

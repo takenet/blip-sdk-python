@@ -141,17 +141,25 @@ class ExtensionBase:
             uri += '?'  # noqa: WPS336
         return f'{uri}{urlencode(query, quote_via=quote)}'
 
-    def build_uri(self, uri: str, **kwargs: dict) -> str:
+    def build_uri(self, uri: str, *args: dict) -> str:
         """Build a uri with parameters.
 
+        Usage:
+
+        ```py
+        build_uri('https://take.net/{1}', 'foo')
+        # output: 'https://take.net/foo'
+        build_uri('https://take.net/{1}/{2}/{3}', 'foo', 'bar', 'zoo')
+        # output: 'https://take.net/foo/bar/zoo'
+        ```
+
         Args:
-            uri (str): the template uri with {{params}}
-            kwargs: the parameters to replace
+            uri (str): the template uri with {index}
+            args: the parameters to replace
 
         Returns:
             str: the final uri
         """
-        for name, value in kwargs.items():
-            placeholder = '{{' + name + '}}'  # noqa: WPS336
-            uri = uri.replace(placeholder, quote(value))
+        for index, value in enumerate(args):
+            uri = uri.replace(f'{{{index}}}', quote(value))
         return uri
