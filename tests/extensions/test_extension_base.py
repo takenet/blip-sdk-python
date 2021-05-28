@@ -1,3 +1,5 @@
+from asyncio import Future
+from typing import Any
 from lime_python.protocol.command import Command
 from pytest import mark
 from pytest_mock import MockerFixture
@@ -116,7 +118,7 @@ class TestExtensionBase:
         mocker: MockerFixture
     ) -> None:
         # Arrange
-        target = self.get_target()
+        target = self.get_target(mocker.Mock())
 
         command = Command('get', '/ping')
         command.id = id
@@ -127,10 +129,9 @@ class TestExtensionBase:
             resource={},
             status='success'
         )
-        mocker.patch.object(
-            target.client,
-            'process_command_async',
-            return_value=self.__async_result(expected_result)
+
+        target.client.process_command_async = mocker.MagicMock(
+            return_value=self.__async_return(expected_result)
         )
 
         # Act
@@ -141,14 +142,10 @@ class TestExtensionBase:
             expected_result.id = result.id
         assert result == expected_result
 
-    def get_target(self) -> ExtensionBase:
-        return ExtensionBase(DummyClient())
+    def get_target(self, client=None) -> ExtensionBase:
+        return ExtensionBase(client)
 
-    async def __async_result(self, result):
-        return result
-
-
-class DummyClient:
-
-    async def process_command_async(self):
-        pass
+    def __async_return(self, result: Any) -> Future:
+        fut = Future()
+        fut.set_result(result)
+        return fut
