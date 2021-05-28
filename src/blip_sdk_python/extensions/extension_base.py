@@ -139,7 +139,12 @@ class ExtensionBase:
         """
         if not uri.endswith('?'):
             uri += '?'  # noqa: WPS336
-        return f'{uri}{urlencode(query, quote_via=quote)}'
+
+        fixed_query = query.copy()
+        for name, value in query.items():
+            if not value:
+                del fixed_query[name]
+        return f'{uri}{urlencode(fixed_query, quote_via=quote)}'
 
     def build_uri(self, uri: str, *args: dict) -> str:
         """Build a uri with parameters.
