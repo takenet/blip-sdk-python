@@ -144,8 +144,17 @@ class ExtensionBase:
     def build_uri(self, uri: str, *args: dict) -> str:
         """Build a uri with parameters.
 
+        Usage:
+
+        ```py
+        build_uri('https://take.net/{1}', 'foo')
+        # output: 'https://take.net/foo'
+        build_uri('https://take.net/{1}/{2}/{3}', 'foo', 'bar', 'zoo')
+        # output: 'https://take.net/foo/bar/zoo'
+        ```
+
         Args:
-            uri (str): the template uri with {{params}}
+            uri (str): the template uri with {index}
             args: the parameters to replace
 
         Returns:
