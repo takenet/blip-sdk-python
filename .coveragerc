@@ -1,0 +1,2 @@
+[run]
+omit = tests/*, src/blip_sdk_python/application.py
