@@ -121,8 +121,7 @@ class ExtensionBase:
             Command: the response
         """
         command.id = command.id if command.id else str(uuid4())
-        command_res: Command = await self.client.process_command_async(command)
-        return command_res
+        return await self.client.process_command_async(command)
 
     def build_resource_query(
         self,
