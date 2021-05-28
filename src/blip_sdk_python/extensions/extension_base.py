@@ -1,8 +1,10 @@
 from typing import Any, Dict
-from urllib.parse import quote, urlencode
+from urllib.parse import urlencode
 from uuid import uuid4
 
 from lime_python import Command, CommandMethod
+
+from ..utilities import RequestUtilities
 
 
 class ExtensionBase:
@@ -144,7 +146,10 @@ class ExtensionBase:
         for name, value in query.items():
             if not value:
                 del fixed_query[name]
-        return f'{uri}{urlencode(fixed_query, quote_via=quote)}'
+
+        encoded_part = urlencode(fixed_query, quote_via=RequestUtilities.quote)
+
+        return f'{uri}{encoded_part}'
 
     def build_uri(self, uri: str, *args: dict) -> str:
         """Build a uri with parameters.
@@ -166,5 +171,5 @@ class ExtensionBase:
             str: the final uri
         """
         for index, value in enumerate(args):
-            uri = uri.replace(f'{{{index}}}', quote(value))
+            uri = uri.replace(f'{{{index}}}', RequestUtilities.quote(value))
         return uri
