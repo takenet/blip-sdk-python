@@ -132,6 +132,15 @@ class ExtensionBase:
     ) -> str:
         """Build the resource query.
 
+        Usage:
+
+        ```py
+        build_resource_query('https://take.net', { 'foo': 'bar' })
+        # output: 'https://take.net?foo=bar'
+        build_uri('https://take.net?', { 'foo': 'bar', 'zoo': 'buu' })
+        # output: 'https://take.net?foo=bar&zoo=buu'
+        ```
+
         Args:
             uri (str): base uri
             query (Dict[str, str]): items to add
@@ -139,13 +148,13 @@ class ExtensionBase:
         Returns:
             str: final uri
         """
-        if not uri.endswith('?'):
-            uri += '?'  # noqa: WPS336
-
         fixed_query = query.copy()
         for name, value in query.items():
-            if not value:
+            if value is None:
                 del fixed_query[name]
+
+        if len(fixed_query) and not uri.endswith('?'):
+            uri += '?'  # noqa: WPS336
 
         encoded_part = urlencode(fixed_query, quote_via=RequestUtilities.quote)
 
