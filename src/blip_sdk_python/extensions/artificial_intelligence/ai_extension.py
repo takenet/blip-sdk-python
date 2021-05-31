@@ -45,6 +45,9 @@ class AiExtension(ExtensionBase):
             end_date (str, optional): the end date of the request.
             min_score (str, optional): minimal score.
             max_score (str, optional): maximus score.
+
+        Returns:
+            Command: Command response
         """
 
         analysis_params = {
@@ -72,6 +75,9 @@ class AiExtension(ExtensionBase):
 
         Args:
             analysis (dict): Input analysis
+
+         Returns:
+            Command: Command response
         """
         self.create_set_command(
             UriTemplates.ANALYSIS,
@@ -103,7 +109,7 @@ class AiExtension(ExtensionBase):
             max_score (str, optional): max score to be considered.
 
         Returns:
-            Awaitable[Command]: Command response
+            Command: Command response
         """
         send_email_resource = {
             'email': email_and_filter['email'],
@@ -129,7 +135,16 @@ class AiExtension(ExtensionBase):
 
         return await self.process_command_async(send_email_command)
 
-    async def set_analysis_feedback(self, id: str, analyses: dict):
+    async def set_analysis_feedback(self, id: str, analyses: list) -> Awaitable[Command]:
+        """Send feedbacks into analysis.
+
+        Args:
+            id (str): Command id
+            analyses (dict): analyses 
+
+        Returns:
+            Command: Command response
+        """
         analyses_feedback_resource = {
             'itemType': ContentType.ANALYSIS_FEEDBACK,
             'items': analyses
@@ -142,7 +157,15 @@ class AiExtension(ExtensionBase):
         return await self.process_command_async(analyses_feedback_command)
 
     # analytics
-    async def get_analytics(self, id: str = None):
+    async def get_analytics(self, id: str = None) -> Awaitable[Command]:
+        """Get analytics.
+
+        Args:
+            id (str, optional): Unique identifier of the command.
+
+        Returns:
+            Command: Command response
+        """
         uri = self.build_uri(
             UriTemplates.ANALYTICS_ID,
             id) \
@@ -150,25 +173,50 @@ class AiExtension(ExtensionBase):
 
         return await self.process_command_async(self.create_get_command(uri))
 
-    async def set_analytics(self, confusion_matrix):
+    async def set_analytics(self, confusion_matrix: dict) -> Awaitable[Command]:
+        """Create a confusion matrix into your model.
+
+        Args:
+            confusion_matrix (dict): Represents a confusion matrix model.
+
+        Returns:
+            Command: Command response
+        """
         confusion_matrix_resource = self.create_set_command(
             UriTemplates.ANALYTICS,
-            ContentType.CONFUSION_MATRIX,
-            confusion_matrix
+            confusion_matrix,
+            ContentType.CONFUSION_MATRIX
         )
 
         return await self.process_command_async(confusion_matrix_resource)
 
-    async def delete_analytics(self, id: str):
+    async def delete_analytics(self, id: str) -> Awaitable[Command]:
+        """Delete analytics.
+
+        Args:
+            id (str): Unique identifier of the command.
+
+        Returns:
+            Command: Command response
+        """
         delete_analytics_command = self.create_delete_command(
-            self.build_uri(UriTemplates.ANALYTICS_ID, id)
+            self.build_uri(UriTemplates.ANALYTICS_ID, id=id)
         )
 
         self.process_command_async(delete_analytics_command)
 
     # Intents
 
-    async def get_intent(self, id: str, deep: bool = False):
+    async def get_intent(self, id: str, deep: bool = False) -> Awaitable[Command]:
+        """Get a specific intent.
+
+        Args:
+            id (str): Unique identifier of the command.
+            deep (bool, optional): deep.
+
+        Returns:
+            Command: Command response
+        """
         get_intent_command = self.create_get_command(
             self.build_resource_query(
                 self.build_uri(UriTemplates.INTENTION, id),
