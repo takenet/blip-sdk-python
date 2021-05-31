@@ -131,12 +131,12 @@ class AiExtension(ExtensionBase):
 
     async def set_analysis_feedback(self, id: str, analyses: dict):
         analyses_feedback_resource = {
-            'item_type': ContentType.ANALYSIS_FEEDBACK,
+            'itemType': ContentType.ANALYSIS_FEEDBACK,
             'items': analyses
         }
         analyses_feedback_command = self.create_set_command(
             self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id=id),
-            analyses,
+            analyses_feedback_resource,
             ContentType.ANALYSIS_FEEDBACK
         )
         return await self.process_command_async(analyses_feedback_command)
