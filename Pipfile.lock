@@ -267,11 +267,11 @@
         },
         "lime-python": {
             "hashes": [
-                "sha256:1881bfc671d000b082659ebc2598e123ee88185f9b77644a7a26db084cba81f9",
-                "sha256:59dc6481ea15d83f97962f436d0b091a8f5ead513f959cecad971812e2f950c3"
+                "sha256:37e855223ef9a2e9fe4e32418b194082f80e947ef1dacd2548cf3077c50c1ce6",
+                "sha256:53465bca167cc1fd921de4ff99446f3da2af694a6ceb8c0949f07cc835c449dd"
             ],
             "index": "pypi",
-            "version": "==2.0.4"
+            "version": "==2.0.5"
         },
         "lime-transport-websocket": {
             "hashes": [
