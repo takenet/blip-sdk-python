@@ -23,5 +23,5 @@ typing-extensions = "*"
 python_version = "3.8"
 
 [scripts]
-test-cov = "pytest --cache-clear --cov-report term --cov=src tests/"
-test-lint = "flake8 . --count --show-source --statistics"
+test = "pytest --cache-clear --cov-report term --cov=src tests/"
+lint = "flake8 . --count --show-source --statistics"
