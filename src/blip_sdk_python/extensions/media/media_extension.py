@@ -15,30 +15,38 @@ class MediaExtension(ExtensionBase):
 
     async def get_upload_token_async(
         self,
-        secure: bool = False
+        secure: bool = None,
+        **kwargs
     ) -> Awaitable[Command]:
         """Get token to upload media.
 
         Args:
             secure (bool): is media secure.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command
         """
         uri = self.build_resource_query(
             UriTemplates.MEDIA_UPLOAD,
-            {'secure': secure}
+            {'secure': secure, **kwargs}
         )
         return await self.process_command_async(self.create_get_command(uri))
 
-    async def refresh_media_async(self, id: str) -> Awaitable[Command]:
+    async def refresh_media_async(
+        self,
+        id: str,
+        **kwargs
+    ) -> Awaitable[Command]:
         """Refresh an uploaded media.
 
         Args:
             id (str): the media id
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command
         """
         uri = self.build_uri(UriTemplates.REFRESH_MEDIA, id)
+        uri = self.build_resource_query(uri, kwargs)
         return await self.process_command_async(self.create_get_command(uri))

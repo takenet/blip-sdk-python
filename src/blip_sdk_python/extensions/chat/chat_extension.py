@@ -11,10 +11,11 @@ class ChatExtension(ExtensionBase):
 
     async def get_threads_async(
         self,
-        take: int = 100,
-        skip: int = 0,
+        take: int = None,
+        skip: int = None,
         message_date: str = None,
-        refresh_expired_media: bool = False
+        refresh_expired_media: bool = None,
+        **kwargs
     ) -> Awaitable[Command]:
         """Get chatbot message history.
 
@@ -25,6 +26,7 @@ class ChatExtension(ExtensionBase):
             message_date (str): Initial date on the threads query
             refresh_expired_media (bool): Defines if the expired media \
             links should be refreshed
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command
@@ -35,7 +37,8 @@ class ChatExtension(ExtensionBase):
                 '$take': take,
                 '$skip': skip,
                 'messageDate': message_date,
-                'refreshExpiredMedia': refresh_expired_media
+                'refreshExpiredMedia': refresh_expired_media,
+                **kwargs
             }
         )
         return await self.process_command_async(self.create_get_command(uri))
@@ -43,14 +46,15 @@ class ChatExtension(ExtensionBase):
     async def get_thread_async(
         self,
         identity: str = None,
-        take: int = 100,
-        skip: int = 0,
+        take: int = None,
+        skip: int = None,
         message_id: str = None,
         storage_date: str = None,
         direction: str = None,
-        refresh_expired_media: bool = False,
-        decrypt_content: bool = False,
-        after: str = None
+        refresh_expired_media: bool = None,
+        decrypt_content: bool = None,
+        after: str = None,
+        **kwargs
     ) -> Awaitable[Command]:
         """Get a user thread message history.
 
@@ -71,6 +75,7 @@ class ChatExtension(ExtensionBase):
             media links should be refreshed
             decrypt_content (bool): decrypt the content
             after (str): after
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Awaitable[Command]: [description]
@@ -86,41 +91,48 @@ class ChatExtension(ExtensionBase):
                 'direction': direction,
                 'refreshExpiredMedia': refresh_expired_media,
                 'decryptContent': decrypt_content,
-                'after': after
+                'after': after,
+                **kwargs
             }
         )
         return await self.process_command_async(self.create_get_command(uri))
 
     async def get_thread_unread_messages_async(
         self,
-        identity: str
+        identity: str,
+        **kwargs
     ) -> Awaitable[Command]:
         """Get user unread messages.
 
         Args:
             identity (str): user identity
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command
         """
         uri = self.build_uri(UriTemplates.THREAD_UNREAD_MESSAGES, identity)
+        uri = self.build_resource_query(uri, kwargs)
         return await self.process_command_async(self.create_get_command(uri))
 
     async def set_thread_async(
         self,
         identity: str,
-        thread: Any
+        thread: Any,
+        **kwargs
     ) -> Awaitable[Command]:
         """Set a user thread.
 
         Args:
             identity (str): user identity
             thread (Any): message thread
+            kwargs: any other optional parameter not covered by the methods
 
         Returns:
             Command
         """
         uri = self.build_uri(UriTemplates.THREAD, identity)
+        uri = self.build_resource_query(uri, kwargs)
         return await self.process_command_async(
             self.create_set_command(uri, thread, ContentTypes.THREAD_MESSAGE)
         )

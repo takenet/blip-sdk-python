@@ -8,7 +8,7 @@ from ...utilities import async_return
 
 class TestChatExtension:
 
-    @fixture(autouse=True)
+    @fixture
     def target(self, mocker: MockerFixture) -> ChatExtension:
         yield ChatExtension(mocker.MagicMock())
 
@@ -19,7 +19,7 @@ class TestChatExtension:
         target: ChatExtension
     ) -> Awaitable:
         # Arrange
-        expected_command = Command('get', '/threads?$take=100')
+        expected_command = Command('get', '/threads?foo=bar')
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
@@ -27,7 +27,7 @@ class TestChatExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_threads_async()
+        await target.get_threads_async(foo='bar')
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
@@ -41,7 +41,8 @@ class TestChatExtension:
     ) -> Awaitable:
         # Arrange
         expected_command = Command(
-            'get', '/threads/my-id?$take=100&refreshExpiredMedia=True')
+            'get', '/threads/my-id?refreshExpiredMedia=True'
+        )
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
@@ -63,7 +64,8 @@ class TestChatExtension:
     ) -> Awaitable:
         # Arrange
         expected_command = Command(
-            'get', '/threads/my-id/unread')
+            'get', '/threads/my-id/unread'
+        )
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
