@@ -5,10 +5,12 @@ from pytest_mock import MockerFixture
 from src import MediaExtension
 from ...utilities import async_return
 
+MEDIA_TO = 'postmaster@media.mging.net'
+
 
 class TestMediaExtension:
 
-    @fixture(autouse=True)
+    @fixture
     def target(self, mocker: MockerFixture) -> MediaExtension:
         yield MediaExtension(mocker.MagicMock(), 'mging.net')
 
@@ -21,26 +23,21 @@ class TestMediaExtension:
         secure: bool
     ) -> Awaitable:
         # Arrange
-        command_id = 'some-id'
-        expected_result = Command.from_json(
-            {
-                'type': 'text/plain',
-                'resource': 'https://media.msging.net/media/media-id',
-                'method': 'get',
-                'status': 'success',
-                'id': command_id
-            }
-        )
+        uri = f'/upload-media-uri?secure={secure}' if secure is not None else '/upload-media-uri'  # noqa: E501
+        expected_command = Command('get', uri)
+        expected_command.to = MEDIA_TO
 
-        target.client.process_command_async = mocker.MagicMock(
-            return_value=async_return(expected_result)
+        mock = mocker.MagicMock(
+            return_value=async_return(None)
         )
+        target.client.process_command_async = mock
 
         # Act
-        result = await target.get_upload_token_async(secure)
+        await target.get_upload_token_async(secure)
 
         # Assert
-        assert result == expected_result
+        expected_command.id = mock.call_args[0][0].id
+        mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
     async def test_refresh_media(
@@ -49,23 +46,20 @@ class TestMediaExtension:
         target: MediaExtension
     ) -> Awaitable:
         # Arrange
-        media = 'media-id'
-        expected_result = Command.from_json(
-            {
-                'type': 'text/plain',
-                'resource': f'https://my-media/{media}',
-                'method': 'get',
-                'status': 'success',
-                'id': 'eef6e5c4-3a06-4baa-aca1-a7a8fd2ce58b'
-            }
+        media = 'my-id'
+        expected_command = Command(
+            'get', f'/refresh-media-uri/{media}?foo=bar'
         )
+        expected_command.to = MEDIA_TO
 
-        target.client.process_command_async = mocker.MagicMock(
-            return_value=async_return(expected_result)
+        mock = mocker.MagicMock(
+            return_value=async_return(None)
         )
+        target.client.process_command_async = mock
 
         # Act
-        result = await target.refresh_media_async(media)
+        await target.refresh_media_async(media, foo='bar')
 
         # Assert
-        assert result == expected_result
+        expected_command.id = mock.call_args[0][0].id
+        mock.assert_called_once_with(expected_command)
