@@ -1,4 +1,3 @@
-from typing import Awaitable
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
@@ -17,7 +16,7 @@ class TestChatExtension:
         self,
         mocker: MockerFixture,
         target: ChatExtension
-    ) -> Awaitable:
+    ) -> None:
         # Arrange
         expected_command = Command('get', '/threads?foo=bar')
 
@@ -38,7 +37,7 @@ class TestChatExtension:
         self,
         mocker: MockerFixture,
         target: ChatExtension
-    ) -> Awaitable:
+    ) -> None:
         # Arrange
         expected_command = Command(
             'get', '/threads/my-id?refreshExpiredMedia=True'
@@ -61,7 +60,7 @@ class TestChatExtension:
         self,
         mocker: MockerFixture,
         target: ChatExtension
-    ) -> Awaitable:
+    ) -> None:
         # Arrange
         expected_command = Command(
             'get', '/threads/my-id/unread'
@@ -84,7 +83,7 @@ class TestChatExtension:
         self,
         mocker: MockerFixture,
         target: ChatExtension
-    ) -> Awaitable:
+    ) -> None:
         # Arrange
         expected_command = Command(
             'set',

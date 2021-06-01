@@ -1,4 +1,4 @@
-from typing import Any, Awaitable
+from typing import Any
 
 from lime_python.protocol.command import Command
 from ..extension_base import ExtensionBase
@@ -17,7 +17,7 @@ class MediaExtension(ExtensionBase):
         self,
         secure: bool = None,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get token to upload media.
 
         Args:
@@ -37,7 +37,7 @@ class MediaExtension(ExtensionBase):
         self,
         id: str,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Refresh an uploaded media.
 
         Args:

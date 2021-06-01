@@ -9,7 +9,7 @@ def async_return(result: Any) -> Awaitable[Any]:
         result (Any): the mock result
 
     Returns:
-        Awaitable[Any]: the async result response
+        Any: the async result response
     """
     fut = Future()
     fut.set_result(result)
