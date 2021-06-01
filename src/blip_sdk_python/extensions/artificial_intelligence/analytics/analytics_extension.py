@@ -9,7 +9,7 @@ POSTMASTER_AI = 'postmaster@ai'
 
 
 class AnalyticsExtension(ExtensionBase):
-    """Extension to handle Blip AI Services"""
+    """Extension to handle Blip Analytics Services"""
 
     def __init__(self, client, domain):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
