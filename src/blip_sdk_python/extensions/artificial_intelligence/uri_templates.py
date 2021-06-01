@@ -13,6 +13,8 @@ class UriTemplates:
 
     ANALYTICS_ID = '/analytics/confusion-matrix/{0}'
 
+    #intent
+    
     INTENTIONS = '/intentions'
 
     INTENTION = '/intentions/{0}'
