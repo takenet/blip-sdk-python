@@ -238,7 +238,8 @@ class IntentsExtension(ExtensionBase):
         """
         return await self.process_command_async(
             self.create_delete_command(
-                self.build_uri(UriTemplates.INTENTION_ANSWER, id, answer_id)
+                self.build_uri(UriTemplates.INTENTION_ANSWER,
+                               id, answerId=answer_id)
             )
         )
 
@@ -295,7 +296,7 @@ class IntentsExtension(ExtensionBase):
                 self.build_uri(
                     UriTemplates.INTENTION_QUESTION,
                     id=id,
-                    question_id=question_id
+                    questionId=question_id
                 )
             )
         )

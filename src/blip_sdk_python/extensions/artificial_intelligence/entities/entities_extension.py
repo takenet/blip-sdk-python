@@ -15,7 +15,7 @@ class EntitiesExtension(ExtensionBase):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
     async def get_entity(self, id: str) -> Awaitable[Command]:
-        """Get entity
+        """Get entity.
 
         Args:
             id (str): entity id
@@ -36,6 +36,17 @@ class EntitiesExtension(ExtensionBase):
         ascending: bool = False,
         name: str = None
     ) -> Awaitable[Command]:
+        """Get all entities.
+
+        Args:
+            skip (int, optional): Numbers of entities to be skipped.
+            take (int, optional): Numbers of entities to be taked.
+            ascending (bool, optional): Sets ascending alphabetical order..
+            name (str, optional): name.
+
+        Returns:
+            Command: Command response
+        """
         entities_resource_query = self.build_resource_query(
             UriTemplates.ENTITIES,
             {
@@ -52,7 +63,15 @@ class EntitiesExtension(ExtensionBase):
             )
         )
 
-    async def set_entity(self, entity: str) -> Awaitable[Command]:
+    async def set_entity(self, entity: dict) -> Awaitable[Command]:
+        """Add entity on a base.
+
+        Args:
+            entity (dict): Entity to be added
+
+        Returns:
+            Command: Command response
+        """
         return await self.process_command_async(
             self.create_set_command(
                 UriTemplates.ENTITIES,
@@ -62,6 +81,14 @@ class EntitiesExtension(ExtensionBase):
         )
 
     async def delete_entity(self, id: str) -> Awaitable[Command]:
+        """Delete a entity.
+
+        Args:
+            id (str): Entity id
+
+        Returns:
+            Command: Command response
+        """
         return await self.process_command_async(
             self.create_delete_command(
                 self.build_uri(UriTemplates.ENTITY, id)
@@ -69,64 +96,11 @@ class EntitiesExtension(ExtensionBase):
         )
 
     async def delete_entities(self) -> Awaitable[Command]:
+        """Delete all entities.
+
+        Returns:
+            Command: Command response
+        """
         return await self.process_command_async(
             self.create_delete_command(UriTemplates.ENTITY)
-        )
-
-    # Model
-
-    async def get_models(
-        self,
-        skip: int = 0,
-        take: int = 100,
-        ascending: bool = False
-    ) -> Awaitable[Command]:
-        models_resource_query = self.build_resource_query(
-            UriTemplates.MODELS,
-            {
-                '$skip': skip,
-                '$take': take,
-                '$ascending': ascending
-            }
-        )
-
-        return await self.process_command_async(
-            self.create_get_command(
-                models_resource_query,
-            )
-        )
-
-    async def get_model(self, id: str) -> Awaitable[Command]:
-        return await self.process_command_async(
-            self.create_get_command(
-                self.build_uri(UriTemplates.MODEL, id)
-            )
-        )
-
-    async def get_model_summary(self) -> Awaitable[Command]:
-        return await self.process_command_async(
-            self.create_get_command(UriTemplates.MODELS_SUMMARY)
-        )
-
-    async def get_last_trained_or_published_model(self) -> Awaitable[Command]:
-        return await self.process_command_async(
-            self.create_get_command(UriTemplates.LAST_TRAINED_OR_PUBLISH_MODEL)
-        )
-
-    async def train_model(self) -> Awaitable[Command]:
-        return await self.create_set_command(
-            UriTemplates.MODELS,
-            {},
-            ContentType.MODEL_TRAINING
-        )
-
-    async def publish_model(self, id: str) -> Awaitable[Command]:
-        return await self.process_command_async(
-            self.create_set_command(
-                UriTemplates.MODELS,
-                {
-                    'id': id
-                },
-                ContentType.MODEL_PUBLISHING
-            )
         )
