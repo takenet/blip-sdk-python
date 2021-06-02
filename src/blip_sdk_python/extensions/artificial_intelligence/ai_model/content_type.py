@@ -1,5 +1,5 @@
 class ContentType:
-    """AI Model content types"""
+    """AI Model content types."""
 
     MODEL_PUBLISHING = 'application/vnd.iris.ai.model-publishing+json'
 

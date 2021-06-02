@@ -1,15 +1,14 @@
 from typing import Awaitable
 from lime_python.protocol import Command
+from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
-from ...extension_base import ExtensionBase
-
 
 POSTMASTER_AI = 'postmaster@ai'
 
 
 class EntitiesExtension(ExtensionBase):
-    """Extension to handle Blip Entities Services"""
+    """Extension to handle Blip Entities Services."""
 
     def __init__(self, client, domain):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
@@ -39,10 +38,10 @@ class EntitiesExtension(ExtensionBase):
         """Get all entities.
 
         Args:
-            skip (int, optional): Numbers of entities to be skipped.
-            take (int, optional): Numbers of entities to be taked.
-            ascending (bool, optional): Sets ascending alphabetical order..
-            name (str, optional): name.
+            skip (int): Numbers of entities to be skipped.
+            take (int): Numbers of entities to be taked.
+            ascending (bool): Sets ascending alphabetical order..
+            name (str): name.
 
         Returns:
             Command: Command response

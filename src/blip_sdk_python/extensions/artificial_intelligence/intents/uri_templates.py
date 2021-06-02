@@ -1,4 +1,5 @@
 class UriTemplates:
+    """Entities uri templates."""
 
     INTENTIONS = '/intentions'
 

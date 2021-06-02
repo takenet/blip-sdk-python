@@ -1,5 +1,5 @@
 class UriTemplates:
-    """AI Model uri templates"""
+    """AI Model uri templates."""
 
     MODELS = '/models'
 

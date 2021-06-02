@@ -1,24 +1,23 @@
-from typing import Awaitable
-from lime_python.protocol import Command, ContentTypes, command
+from lime_python import Command, ContentTypes
+from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
-from ...extension_base import ExtensionBase
 
 POSTMASTER_AI = 'postmaster@ai'
 
 
 class IntentsExtension(ExtensionBase):
-    """Extension to handle Blip AI Services"""
+    """Extension to handle Blip AI Services."""
 
     def __init__(self, client, domain):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
-    async def get_intent(self, id: str, deep: bool = False) -> Awaitable[Command]:
+    async def get_intent(self, id: str, deep: bool = False) -> Command:
         """Get a specific intent.
 
         Args:
             id (str): Unique identifier of the command.
-            deep (bool, optional): deep.
+            deep (bool): deep.
 
         Returns:
             Command: Command response
@@ -41,15 +40,15 @@ class IntentsExtension(ExtensionBase):
         deep: bool = False,
         name: str = None,
         ascending: bool = False
-    ) -> Awaitable[Command]:
-        """Getting all intents from a model.
+    ) -> Command:
+        """Get all intents from a model.
 
         Args:
-            skip (int, optional): The number of intents to be skipped.
-            take (int, optional): The number of intents to be returned.
-            deep (bool, optional): deep.
-            name (str, optional): intent name.
-            ascending (bool, optional): Sets ascending alphabetical order.
+            skip (int): The number of intents to be skipped.
+            take (int): The number of intents to be returned.
+            deep (bool): deep.
+            name (str): intent name.
+            ascending (bool): Sets ascending alphabetical order.
 
         Returns:
             Command: Command response
@@ -69,8 +68,8 @@ class IntentsExtension(ExtensionBase):
             self.create_get_command(intents_resource_query)
         )
 
-    async def set_intent(self, intent: dict) -> Awaitable[Command]:
-        """Create intent
+    async def set_intent(self, intent: dict) -> Command:
+        """Create intent.
 
         Args:
             intent (dict): intent object
@@ -86,7 +85,7 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def set_intents(self, intents: list) -> Awaitable[Command]:
+    async def set_intents(self, intents: list) -> Command:
         """Create list of intents.
 
         Args:
@@ -95,19 +94,19 @@ class IntentsExtension(ExtensionBase):
         Returns:
             Command: Response command
         """
-        set_intents_resource = {
-            'itemType': ContentType.INTENTION,
-            'items': intents
-        }
+        set_intents_resource = self.__build_resource(
+            intents,
+            ContentType.INTENTION
+        )
+
         set_intents_command = self.create_set_command(
             UriTemplates.INTENTIONS,
-            set_intents_resource,
-
+            set_intents_resource
         )
 
         return await self.process_command_async(set_intents_command)
 
-    async def merge_intent(self, intent: dict) -> Awaitable[Command]:
+    async def merge_intent(self, intent: dict) -> Command:
         """Merge an intent into a base.
 
         Args:
@@ -124,7 +123,7 @@ class IntentsExtension(ExtensionBase):
 
         return await self.process_command_async(merge_intents_command)
 
-    async def merge_intents(self, intents: list) -> Awaitable[Command]:
+    async def merge_intents(self, intents: list) -> Command:
         """Merge list of intents into a base.
 
         Args:
@@ -133,10 +132,11 @@ class IntentsExtension(ExtensionBase):
         Returns:
             Command: Command response
         """
-        merge_intents_resource = {
-            'itemType': ContentType.INTENTION,
-            'items': intents
-        }
+        merge_intents_resource = self.__build_resource(
+            intents,
+            ContentType.INTENTION
+        )
+
         merge_intents_command = self.create_merge_command(
             UriTemplates.INTENTIONS,
             merge_intents_resource,
@@ -145,7 +145,7 @@ class IntentsExtension(ExtensionBase):
 
         return await self.process_command_async(merge_intents_command)
 
-    async def delete_intent(self, id: str) -> Awaitable[Command]:
+    async def delete_intent(self, id: str) -> Command:
         """Delete intent from base.
 
         Args:
@@ -178,19 +178,18 @@ class IntentsExtension(ExtensionBase):
         skip: int = 0,
         take: int = 100,
         ascending: bool = False
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get intent answers.
 
         Args:
             id (str): Intent id
-            skip (int, optional): Number of answers to be skipped.
-            take (int, optional): Number of answers to be take.
-            ascending (bool, optional): Sets ascending alphabetical order.
+            skip (int): Number of answers to be skipped.
+            take (int): Number of answers to be take.
+            ascending (bool): Sets ascending alphabetical order.
 
         Returns:
             Command: Command response
         """
-
         intent_answers_query = self.build_resource_query(
             self.build_uri(UriTemplates.INTENTION_ANSWERS, id),
             {
@@ -206,8 +205,8 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def set_intent_answers(self, id: str, answers: dict) -> Awaitable[Command]:
-        """Set a intent answer
+    async def set_intent_answers(self, id: str, answers: dict) -> Command:
+        """Set a intent answer.
 
         Args:
             id (str): Intent id
@@ -219,33 +218,37 @@ class IntentsExtension(ExtensionBase):
         intent_answers_command = self.create_set_command(
             self.build_uri(UriTemplates.INTENTION_ANSWERS, id),
             type_n=ContentTypes.COLLECTION,
-            resource={
-                'itemType': ContentType.ANSWER,
-                'items': answers
-            }
+            resource=self.__build_resource(
+                answers,
+                ContentType.ANSWER
+            )
         )
 
         return await self.process_command_async(intent_answers_command)
 
-    async def delete_intent_answers(self, id: str, answer_id: str) -> Awaitable[Command]:
-        """Delete a intent answer
+    async def delete_intent_answers(self, id: str, answer_id: str) -> Command:
+        """Delete intent answer.
 
         Args:
-            id (str): Intent id
-            answer_id (str): Answer id
+            id (str): intent id.
+            answer_id (str): answer id.
+
         Returns:
             Command: Command response
         """
         return await self.process_command_async(
             self.create_delete_command(
-                self.build_uri(UriTemplates.INTENTION_ANSWER,
-                               id, answerId=answer_id)
+                self.build_uri(
+                    UriTemplates.INTENTION_ANSWER,
+                    id,
+                    answerId=answer_id
+                )
             )
         )
 
     # Intent Questions
     async def get_intent_questions(self, id: str):
-        """Get intent questions
+        """Get intent questions.
 
         Args:
             id (str): Intent id
@@ -259,8 +262,8 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def set_intent_questions(self, id: str, questions: list) -> Awaitable[Command]:
-        """Create a intent question
+    async def set_intent_questions(self, id: str, questions: list) -> Command:
+        """Create a intent question.
 
         Args:
             id (str): Intent id
@@ -269,10 +272,11 @@ class IntentsExtension(ExtensionBase):
         Returns:
             Command: Command response
         """
-        intent_questions_resource = {
-            'itemType': ContentType.QUESTION,
-            'items': questions
-        }
+        intent_questions_resource = self.__build_resource(
+            questions,
+            ContentType.QUESTION
+        )
+
         return await self.process_command_async(
             self.create_set_command(
                 self.build_uri(UriTemplates.INTENTION_QUESTIONS, id),
@@ -281,8 +285,12 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def delete_intent_question(self, id: str, question_id: str) -> Awaitable[Command]:
-        """Delete a intent question
+    async def delete_intent_question(
+        self,
+        id: str,
+        question_id: str
+    ) -> Command:
+        """Delete a intent question.
 
         Args:
             id (str): Intent id
@@ -300,3 +308,9 @@ class IntentsExtension(ExtensionBase):
                 )
             )
         )
+
+    def __build_resource(self, items: list, item_type: str) -> dict:
+        return {
+            'itemType': item_type,
+            'items': items
+        }

@@ -1,4 +1,5 @@
 class ContentType:
+    """Intents content type."""
 
     INTENTION = 'application/vnd.iris.ai.intention+json'
 

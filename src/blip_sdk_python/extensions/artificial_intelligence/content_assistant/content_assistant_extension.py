@@ -1,16 +1,15 @@
-from typing import Awaitable
 from lime_python import Command, ContentTypes
+from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
-from ...extension_base import ExtensionBase
 
 POSTMASTER_AI = 'postmaster@ai'
 
 
 class ContentAssistantExtension(ExtensionBase):
-    """Extension to handle Content Assistant Services"""
+    """Extension to handle Content Assistant Services."""
 
-    async def analyse_content(self, analysis: dict) -> Awaitable[Command]:
+    async def analyse_content(self, analysis: dict) -> Command:
         """Analyse content.
 
         Args:
@@ -27,8 +26,8 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def match_content(self, combination: dict) -> Awaitable[Command]:
-        """Match content
+    async def match_content(self, combination: dict) -> Command:
+        """Match content.
 
         Args:
             combination (dict): combination object
@@ -49,23 +48,23 @@ class ContentAssistantExtension(ExtensionBase):
         skip: int = 0,
         take: int = 100,
         ascending: bool = False,
-        intents: list = [],
-        entities: list = [],
+        intents: list = None,
+        entities: list = None,
         text: str = '',
         begin_date: str = '',
         end_date: str = ''
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get contents.
 
         Args:
-            skip (int, optional): Number of contents to be skipped.
-            take (int, optional): Number of contents to be take.
-            ascending (bool, optional): Sets ascending alphabetical order..
-            intents (list, optional): Intents list.
-            entities (list, optional): Entities list.
-            text (str, optional): text.
-            begin_date (str, optional): begin date of contents.
-            end_date (str, optional): end date of contents.
+            skip (int): Number of contents to be skipped.
+            take (int): Number of contents to be take.
+            ascending (bool): Sets ascending alphabetical order..
+            intents (list): Intents list.
+            entities (list): Entities list.
+            text (str): text.
+            begin_date (str): begin date of contents.
+            end_date (str): end date of contents.
 
         Returns:
             Command: Command response
@@ -85,7 +84,7 @@ class ContentAssistantExtension(ExtensionBase):
             self.create_get_command(contents_resource_query)
         )
 
-    async def get_content(self, id: str) -> Awaitable[Command]:
+    async def get_content(self, id: str) -> Command:
         """Get content.
 
         Args:
@@ -100,7 +99,7 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def set_content(self, content: dict) -> Awaitable[Command]:
+    async def set_content(self, content: dict) -> Command:
         """Create content combination.
 
         Args:
@@ -117,7 +116,7 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def set_content_result(self, id: str, content: dict) -> Awaitable[Command]:
+    async def set_content_result(self, id: str, content: dict) -> Command:
         """Set content result.
 
         Args:
@@ -135,7 +134,11 @@ class ContentAssistantExtension(ExtensionBase):
 
         return await self.process_command_async(content_result_command)
 
-    async def set_content_combination(self, id: str, combination: dict) -> Awaitable[Command]:
+    async def set_content_combination(
+        self,
+        id: str,
+        combination: dict
+    ) -> Command:
         """Set content combination.
 
         Args:
@@ -153,7 +156,11 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def set_content_combinations(self, id: str, combinations=list) -> Awaitable[Command]:
+    async def set_content_combinations(
+        self,
+        id: str,
+        combinations=list
+    ) -> Command:
         """Set list of combinations.
 
         Args:
@@ -174,7 +181,7 @@ class ContentAssistantExtension(ExtensionBase):
 
         return await self.process_command_async(combinations_command)
 
-    async def delete_content(self, id: str) -> Awaitable[Command]:
+    async def delete_content(self, id: str) -> Command:
         """Delete content.
 
         Args:

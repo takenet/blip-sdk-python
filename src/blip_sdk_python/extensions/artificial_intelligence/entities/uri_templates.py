@@ -1,5 +1,5 @@
 class UriTemplates:
-    """Entities uri templates"""
+    """Entities uri templates."""
 
     ENTITY = '/entities/{0}'
 

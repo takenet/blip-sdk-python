@@ -1,24 +1,23 @@
-from typing import Awaitable
 from lime_python import Command, ContentTypes
-from .content_type import ContentType
 from ...extension_base import ExtensionBase
+from .content_type import ContentType
 from .uri_templates import UriTemplates
 
 POSTMASTER_AI = 'postmaster@ai'
 
 
 class WordSetExtension(ExtensionBase):
-    """Extension to handle Worsd Set AI Services"""
+    """Extension to handle Worsd Set AI Services."""
 
     def __init__(self, client, domain):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
-    async def get_word_set(self, id: str, deep: bool = False) -> Awaitable[Command]:
+    async def get_word_set(self, id: str, deep: bool = False) -> Command:
         """Get word set.
 
         Args:
             id (str): word set id
-            deep (bool, optional): deep.
+            deep (bool): deep.
 
         Returns:
             Command: Command response
@@ -36,8 +35,8 @@ class WordSetExtension(ExtensionBase):
             )
         )
 
-    async def set_word_set_resource(self, id: str, resource: dict) -> Awaitable[Command]:
-        """Creat word set.
+    async def set_word_set_resource(self, id: str, resource: dict) -> Command:
+        """Create word set.
 
         Args:
             id (str): word set id
@@ -57,7 +56,7 @@ class WordSetExtension(ExtensionBase):
 
         return await self.process_command_async(set_resource_command)
 
-    async def set_word_set(self, word_set: any) -> Awaitable[Command]:
+    async def set_word_set(self, word_set: any) -> Command:
         """Create word set.
 
         Args:
@@ -74,7 +73,7 @@ class WordSetExtension(ExtensionBase):
             )
         )
 
-    async def delete_word_set(self, id: str) -> Awaitable[Command]:
+    async def delete_word_set(self, id: str) -> Command:
         """Delete word set.
 
         Args:
@@ -89,7 +88,7 @@ class WordSetExtension(ExtensionBase):
             )
         )
 
-    async def analyse_word_set(self, analysis: dict) -> Awaitable[Command]:
+    async def analyse_word_set(self, analysis: dict) -> Command:
         """Analyse word set.
 
         Args:
