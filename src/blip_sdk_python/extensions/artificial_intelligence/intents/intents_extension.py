@@ -12,7 +12,7 @@ class IntentsExtension(ExtensionBase):
     def __init__(self, client, domain):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
-    async def get_intent(self, id: str, deep: bool = False) -> Command:
+    async def get_intent_async(self, id: str, deep: bool = False) -> Command:
         """Get a specific intent.
 
         Args:
@@ -33,7 +33,7 @@ class IntentsExtension(ExtensionBase):
 
         return await self.process_command_async(get_intent_command)
 
-    async def get_intents(
+    async def get_intents_async(
         self,
         skip: int = 0,
         take: int = 100,
@@ -68,7 +68,7 @@ class IntentsExtension(ExtensionBase):
             self.create_get_command(intents_resource_query)
         )
 
-    async def set_intent(self, intent: dict) -> Command:
+    async def set_intent_async(self, intent: dict) -> Command:
         """Create intent.
 
         Args:
@@ -85,7 +85,7 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def set_intents(self, intents: list) -> Command:
+    async def set_intents_async(self, intents: list) -> Command:
         """Create list of intents.
 
         Args:
@@ -106,7 +106,7 @@ class IntentsExtension(ExtensionBase):
 
         return await self.process_command_async(set_intents_command)
 
-    async def merge_intent(self, intent: dict) -> Command:
+    async def merge_intent_async(self, intent: dict) -> Command:
         """Merge an intent into a base.
 
         Args:
@@ -123,7 +123,7 @@ class IntentsExtension(ExtensionBase):
 
         return await self.process_command_async(merge_intents_command)
 
-    async def merge_intents(self, intents: list) -> Command:
+    async def merge_intents_async(self, intents: list) -> Command:
         """Merge list of intents into a base.
 
         Args:
@@ -145,7 +145,7 @@ class IntentsExtension(ExtensionBase):
 
         return await self.process_command_async(merge_intents_command)
 
-    async def delete_intent(self, id: str) -> Command:
+    async def delete_intent_async(self, id: str) -> Command:
         """Delete intent from base.
 
         Args:
@@ -160,7 +160,7 @@ class IntentsExtension(ExtensionBase):
             self.create_delete_command(delete_intent_uri)
         )
 
-    async def delete_intents(self):
+    async def delete_intents_async(self):
         """Delete all intents from base.
 
         Returns:
@@ -172,7 +172,7 @@ class IntentsExtension(ExtensionBase):
 
     # Intent Answers
 
-    async def get_intent_answers(
+    async def get_intent_answers_async(
         self,
         id: str,
         skip: int = 0,
@@ -205,7 +205,11 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def set_intent_answers(self, id: str, answers: dict) -> Command:
+    async def set_intent_answers_async(
+        self,
+        id: str,
+        answers: dict
+    ) -> Command:
         """Set a intent answer.
 
         Args:
@@ -226,7 +230,11 @@ class IntentsExtension(ExtensionBase):
 
         return await self.process_command_async(intent_answers_command)
 
-    async def delete_intent_answers(self, id: str, answer_id: str) -> Command:
+    async def delete_intent_answers_async(
+        self,
+        id: str,
+        answer_id: str
+    ) -> Command:
         """Delete intent answer.
 
         Args:
@@ -247,7 +255,7 @@ class IntentsExtension(ExtensionBase):
         )
 
     # Intent Questions
-    async def get_intent_questions(self, id: str):
+    async def get_intent_questions_async(self, id: str):
         """Get intent questions.
 
         Args:
@@ -262,7 +270,11 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def set_intent_questions(self, id: str, questions: list) -> Command:
+    async def set_intent_questions_async(
+        self,
+        id: str,
+        questions: list
+    ) -> Command:
         """Create a intent question.
 
         Args:
@@ -285,7 +297,7 @@ class IntentsExtension(ExtensionBase):
             )
         )
 
-    async def delete_intent_question(
+    async def delete_intent_question_async(
         self,
         id: str,
         question_id: str

@@ -14,7 +14,7 @@ class AnalyticsExtension(ExtensionBase):
     def __init__(self, client, domain):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
-    async def get_analysis(
+    async def get_analysis_async(
         self,
         skip: int = 0,
         take: int = 100,
@@ -68,7 +68,7 @@ class AnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(get_command)
 
-    async def analyse(self, analysis: dict) -> Command:
+    async def analyse_async(self, analysis: dict) -> Command:
         """Analyzes an user sentence using a published model.
 
         Args:
@@ -85,7 +85,7 @@ class AnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(analyse_command)
 
-    async def set_analysis_by_email(
+    async def set_analysis_by_email_async(
         self,
         email_and_filter: dict,
         intents: list = None,
@@ -135,7 +135,11 @@ class AnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(send_email_command)
 
-    async def set_analysis_feedback(self, id: str, analyses: list) -> Command:
+    async def set_analysis_feedback_async(
+        self,
+        id: str,
+        analyses: list
+    ) -> Command:
         """Send feedbacks into analysis.
 
         Args:
@@ -156,7 +160,7 @@ class AnalyticsExtension(ExtensionBase):
         )
         return await self.process_command_async(analyses_feedback_command)
 
-    async def get_analytics(self, id: str = None) -> Command:
+    async def get_analytics_async(self, id: str = None) -> Command:
         """Get analytics.
 
         Args:
@@ -172,7 +176,7 @@ class AnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(self.create_get_command(uri))
 
-    async def set_analytics(self, confusion_matrix: dict) -> Command:
+    async def set_analytics_async(self, confusion_matrix: dict) -> Command:
         """Create a confusion matrix into your model.
 
         Args:
@@ -189,7 +193,7 @@ class AnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(confusion_matrix_resource)
 
-    async def delete_analytics(self, id: str) -> Command:
+    async def delete_analytics_async(self, id: str) -> Command:
         """Delete analytics.
 
         Args:

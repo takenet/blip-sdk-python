@@ -12,7 +12,7 @@ class TestContentAssistantExtension:
         yield ContentAssistantExtension(mocker.MagicMock())
 
     @mark.asyncio
-    async def test_analyse_content(
+    async def test_analyse_content_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -37,14 +37,14 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.analyse_content(analysis_object)
+        await target.analyse_content_async(analysis_object)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_match_content(
+    async def test_match_content_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -69,14 +69,14 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.match_content(combinations_object)
+        await target.match_content_async(combinations_object)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_get_contents(
+    async def test_get_contents_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -91,14 +91,14 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_contents(0, 100)
+        await target.get_contents_async(0, 100)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_get_content(
+    async def test_get_content_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -117,14 +117,14 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_content(content_id)
+        await target.get_content_async(content_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_set_content_result(
+    async def test_set_content_result_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -162,14 +162,17 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.set_content_result(content_id, content_result_object)
+        await target.set_content_result_async(
+            content_id,
+            content_result_object
+        )
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_set_content_combination(
+    async def test_set_content_combination_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -196,7 +199,7 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.set_content_combination(
+        await target.set_content_combination_async(
             content_id,
             content_combination_object
         )
@@ -206,7 +209,7 @@ class TestContentAssistantExtension:
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_set_content_combinations(
+    async def test_set_content_combinations_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -239,14 +242,14 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.set_content_combinations(content_id, combinations)
+        await target.set_content_combinations_async(content_id, combinations)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_delete_content(
+    async def test_delete_content_async(
         self,
         mocker: MockerFixture,
         target: ContentAssistantExtension
@@ -265,7 +268,7 @@ class TestContentAssistantExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.delete_content(content_id)
+        await target.delete_content_async(content_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id

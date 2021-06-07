@@ -1,4 +1,3 @@
-from typing import Awaitable
 from lime_python.protocol import Command
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
@@ -10,10 +9,7 @@ POSTMASTER_AI = 'postmaster@ai'
 class EntitiesExtension(ExtensionBase):
     """Extension to handle Blip Entities Services."""
 
-    def __init__(self, client, domain):
-        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
-
-    async def get_entity(self, id: str) -> Awaitable[Command]:
+    async def get_entity_async(self, id: str) -> Command:
         """Get entity.
 
         Args:
@@ -24,17 +20,17 @@ class EntitiesExtension(ExtensionBase):
         """
         return await self.process_command_async(
             self.create_get_command(
-                self.build_uri(ContentType.ENTITY, id)
+                self.build_uri(UriTemplates.ENTITY, id)
             )
         )
 
-    async def get_entities(
+    async def get_entities_async(
         self,
         skip: int = 0,
         take: int = 100,
         ascending: bool = False,
         name: str = None
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get all entities.
 
         Args:
@@ -62,7 +58,7 @@ class EntitiesExtension(ExtensionBase):
             )
         )
 
-    async def set_entity(self, entity: dict) -> Awaitable[Command]:
+    async def set_entity_async(self, entity: dict) -> Command:
         """Add entity on a base.
 
         Args:
@@ -79,7 +75,7 @@ class EntitiesExtension(ExtensionBase):
             )
         )
 
-    async def delete_entity(self, id: str) -> Awaitable[Command]:
+    async def delete_entity_async(self, id: str) -> Command:
         """Delete a entity.
 
         Args:
@@ -94,12 +90,12 @@ class EntitiesExtension(ExtensionBase):
             )
         )
 
-    async def delete_entities(self) -> Awaitable[Command]:
+    async def delete_entities_async(self) -> Command:
         """Delete all entities.
 
         Returns:
             Command: Command response
         """
         return await self.process_command_async(
-            self.create_delete_command(UriTemplates.ENTITY)
+            self.create_delete_command(UriTemplates.ENTITIES)
         )

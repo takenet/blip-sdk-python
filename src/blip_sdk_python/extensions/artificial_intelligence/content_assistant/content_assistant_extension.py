@@ -9,7 +9,7 @@ POSTMASTER_AI = 'postmaster@ai'
 class ContentAssistantExtension(ExtensionBase):
     """Extension to handle Content Assistant Services."""
 
-    async def analyse_content(self, analysis: dict) -> Command:
+    async def analyse_content_async(self, analysis: dict) -> Command:
         """Analyse content.
 
         Args:
@@ -26,7 +26,7 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def match_content(self, combination: dict) -> Command:
+    async def match_content_async(self, combination: dict) -> Command:
         """Match content.
 
         Args:
@@ -43,7 +43,7 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def get_contents(
+    async def get_contents_async(
         self,
         skip: int = 0,
         take: int = 100,
@@ -87,7 +87,7 @@ class ContentAssistantExtension(ExtensionBase):
             self.create_get_command(contents_resource_query)
         )
 
-    async def get_content(self, id: str) -> Command:
+    async def get_content_async(self, id: str) -> Command:
         """Get content.
 
         Args:
@@ -102,7 +102,7 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def set_content(self, content: dict) -> Command:
+    async def set_content_async(self, content: dict) -> Command:
         """Create content combination.
 
         Args:
@@ -119,7 +119,11 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def set_content_result(self, id: str, content: dict) -> Command:
+    async def set_content_result_async(
+        self,
+        id: str,
+        content: dict
+    ) -> Command:
         """Set content result.
 
         Args:
@@ -137,7 +141,7 @@ class ContentAssistantExtension(ExtensionBase):
 
         return await self.process_command_async(content_result_command)
 
-    async def set_content_combination(
+    async def set_content_combination_async(
         self,
         id: str,
         combination: dict
@@ -159,7 +163,7 @@ class ContentAssistantExtension(ExtensionBase):
             )
         )
 
-    async def set_content_combinations(
+    async def set_content_combinations_async(
         self,
         id: str,
         combinations=list
@@ -184,7 +188,7 @@ class ContentAssistantExtension(ExtensionBase):
 
         return await self.process_command_async(combinations_command)
 
-    async def delete_content(self, id: str) -> Command:
+    async def delete_content_async(self, id: str) -> Command:
         """Delete content.
 
         Args:

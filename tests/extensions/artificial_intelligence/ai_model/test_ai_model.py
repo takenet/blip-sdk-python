@@ -12,7 +12,7 @@ class TestAiModelExtension:
         yield AiModelExtension(mocker.MagicMock())
 
     @mark.asyncio
-    async def test_get_models(
+    async def test_get_models_async(
         self,
         mocker: MockerFixture,
         target: AiModelExtension
@@ -29,14 +29,14 @@ class TestAiModelExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_models(0, 100, False)
+        await target.get_models_async(0, 100, False)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_get_model(
+    async def test_get_model_async(
         self,
         mocker: MockerFixture,
         target: AiModelExtension
@@ -55,14 +55,14 @@ class TestAiModelExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_model(model_id)
+        await target.get_model_async(model_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_get_model_summary(
+    async def test_get_model_summary_async(
         self,
         mocker: MockerFixture,
         target: AiModelExtension
@@ -80,14 +80,14 @@ class TestAiModelExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_model_summary()
+        await target.get_model_summary_async()
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_get_last_trained_or_published_model(
+    async def test_get_last_trained_or_published_model_async(
         self,
         mocker: MockerFixture,
         target: AiModelExtension
@@ -105,14 +105,14 @@ class TestAiModelExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_last_trained_or_published_model()
+        await target.get_last_trained_or_published_model_async()
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_train_model(
+    async def test_train_model_async(
         self,
         mocker: MockerFixture,
         target: AiModelExtension
@@ -132,14 +132,14 @@ class TestAiModelExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.train_model()
+        await target.train_model_async()
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_publish_model(
+    async def test_publish_model_async(
         self,
         mocker: MockerFixture,
         target: AiModelExtension
@@ -163,7 +163,7 @@ class TestAiModelExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.publish_model(model_id)
+        await target.publish_model_async(model_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id

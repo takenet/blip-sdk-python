@@ -9,7 +9,7 @@ class AiModelExtension(ExtensionBase):
 
     # Model
 
-    async def get_models(
+    async def get_models_async(
         self,
         skip: int = 0,
         take: int = 100,
@@ -40,7 +40,7 @@ class AiModelExtension(ExtensionBase):
             )
         )
 
-    async def get_model(self, id: str) -> Command:
+    async def get_model_async(self, id: str) -> Command:
         """Get model.
 
         Args:
@@ -55,7 +55,7 @@ class AiModelExtension(ExtensionBase):
             )
         )
 
-    async def get_model_summary(self) -> Command:
+    async def get_model_summary_async(self) -> Command:
         """Get model summary.
 
         Returns:
@@ -65,7 +65,7 @@ class AiModelExtension(ExtensionBase):
             self.create_get_command(UriTemplates.MODELS_SUMMARY)
         )
 
-    async def get_last_trained_or_published_model(self) -> Command:
+    async def get_last_trained_or_published_model_async(self) -> Command:
         """Get last trained or published model.
 
         Returns:
@@ -75,7 +75,7 @@ class AiModelExtension(ExtensionBase):
             self.create_get_command(UriTemplates.LAST_TRAINED_OR_PUBLISH_MODEL)
         )
 
-    async def train_model(self) -> Command:
+    async def train_model_async(self) -> Command:
         """Train model.
 
         Returns:
@@ -89,7 +89,7 @@ class AiModelExtension(ExtensionBase):
 
         return await self.process_command_async(train_model_command)
 
-    async def publish_model(self, id: str) -> Command:
+    async def publish_model_async(self, id: str) -> Command:
         """Publish an existing artificial intelligence model.
 
         Args:

@@ -12,7 +12,7 @@ class WordSetExtension(ExtensionBase):
     def __init__(self, client, domain):
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
-    async def get_word_set(self, id: str, deep: bool = False) -> Command:
+    async def get_word_set_async(self, id: str, deep: bool = False) -> Command:
         """Get word set.
 
         Args:
@@ -35,7 +35,11 @@ class WordSetExtension(ExtensionBase):
             )
         )
 
-    async def set_word_set_resource(self, id: str, resource: dict) -> Command:
+    async def set_word_set_resource_async(
+        self,
+        id: str,
+        resource: dict
+    ) -> Command:
         """Create word set.
 
         Args:
@@ -56,7 +60,7 @@ class WordSetExtension(ExtensionBase):
 
         return await self.process_command_async(set_resource_command)
 
-    async def set_word_set(self, word_set: any) -> Command:
+    async def set_word_set_async(self, word_set: any) -> Command:
         """Create word set.
 
         Args:
@@ -73,7 +77,7 @@ class WordSetExtension(ExtensionBase):
             )
         )
 
-    async def delete_word_set(self, id: str) -> Command:
+    async def delete_word_set_async(self, id: str) -> Command:
         """Delete word set.
 
         Args:
@@ -88,7 +92,7 @@ class WordSetExtension(ExtensionBase):
             )
         )
 
-    async def analyse_word_set(self, analysis: dict) -> Command:
+    async def analyse_word_set_async(self, analysis: dict) -> Command:
         """Analyse word set.
 
         Args:
