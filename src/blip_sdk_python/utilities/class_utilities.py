@@ -26,6 +26,18 @@ class ClassUtilities:
             )
         data = {}
         for entry in args:
-            data.update(vars(entry))  # noqa: WPS421
+            data.update(
+                ClassUtilities.__remove_none_values(
+                    vars(entry)  # noqa: WPS421
+                )
+            )
 
         return args[-1].__class__(**data)
+
+    @staticmethod
+    def __remove_none_values(data: dict) -> dict:
+        clear_data: dict = {}
+        for key, value in data.items():
+            if value is not None:
+                clear_data[key] = value
+        return clear_data
