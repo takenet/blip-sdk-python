@@ -49,7 +49,7 @@ class Client:
             transport_factory = lambda: transport_factory
 
         self.__transport_factory: Callable[[], Transport] = transport_factory
-        self.__transport: Transport = None
+        self.__transport: Transport = transport_factory()
 
         self.__client_channel: ClientChannel = None
 
