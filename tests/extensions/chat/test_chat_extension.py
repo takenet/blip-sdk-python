@@ -2,7 +2,7 @@ from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
 from src import ChatExtension
-from ...utilities import async_return
+from ...async_mock import async_return
 
 
 class TestChatExtension:
