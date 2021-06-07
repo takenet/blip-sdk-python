@@ -5,7 +5,7 @@ from uuid import uuid4
 import lime_python
 
 
-@dataclass(frozen=True)
+@dataclass
 class Application:
     """Basic Application with default values."""
 

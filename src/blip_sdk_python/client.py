@@ -32,26 +32,26 @@ class Client:
             application
         )
 
+        self.session_future: Future = None
         self.__message_receivers: List[Receiver] = []
         self.__notification_receivers: List[Receiver] = []
         self.__command_receivers: List[Receiver] = []
         self.__command_resolves: list = []
-        self.session_future: Future = None
         self.__session_finished_handlers: List[Callable[[Session], None]] = []
         self.__session_failed_handlers: List[Callable[[Session], None]] = []
 
+        self.uri: str = uri
         self.__listening: bool = False
         self.__closing: bool = False
-        self.__uri: str = uri
         self.__connection_try_count: int = 0
 
         if isinstance(transport_factory, Transport):
             transport_factory = lambda: transport_factory
 
+        self.transport: Transport = transport_factory()
         self.__transport_factory: Callable[[], Transport] = transport_factory
-        self.__transport: Transport = transport_factory()
 
-        self.__client_channel: ClientChannel = None
+        self.client_channel: ClientChannel = None
 
         self.__extensions: Dict[Type, ExtensionBase] = {}
 
@@ -72,10 +72,9 @@ class Client:
     @listening.setter
     def listening(self, value: bool):
         self.__listening = value
-        if self.on_listening_changed:
-            self.on_listening_changed(value)
+        self.on_listening_changed(value)
 
-    async def connect_with_guest(self, identifier: str) -> Session:
+    async def connect_with_guest_async(self, identifier: str) -> Session:
         """Connect using Guest Authentication.
 
         Args:
@@ -93,7 +92,7 @@ class Client:
         self.application.authentication = GuestAuthentication()
         return await self.connect_async()
 
-    async def connect_with_password(
+    async def connect_with_password_async(
         self,
         identifier: str,
         password: str,
@@ -124,7 +123,7 @@ class Client:
             self.application.presence = presence
         return await self.connect_async()
 
-    async def connect_with_key(
+    async def connect_with_key_async(
         self,
         identifier: str,
         key: str,
@@ -173,8 +172,8 @@ class Client:
         self.__connection_try_count += 1
         self.__closing = False
 
-        await self.__transport.open_async(self.__uri)
-        session = await self.__client_channel.establish_session_async(
+        await self.transport.open_async(self.uri)
+        session = await self.client_channel.establish_session_async(
             self.application.compression,
             self.application.encryption,
             f'{self.application.identifier}@{self.application.domain}',
@@ -197,8 +196,8 @@ class Client:
         """
         self.__closing = True
 
-        if self.__client_channel.state == SessionState.ESTABLISHED:
-            return await self.__client_channel.send_finishing_session_async()
+        if self.client_channel.state == SessionState.ESTABLISHED:
+            return await self.client_channel.send_finishing_session_async()
 
         if self.session_future.done():
             return self.session_future.result()
@@ -206,16 +205,16 @@ class Client:
 
     def initialize_client_channel(self) -> None:
         """Initialize client channel listeners."""
-        self.__transport.on_close = self.__transport_on_close
+        self.transport.on_close = self.__transport_on_close
 
         self.session_future = Future()
 
-        self.__client_channel = ClientChannel(self.__transport, True, False)
-        self.__client_channel.on_message = self.__client_channel_on_message
-        self.__client_channel.on_notification = self.__client_channel_on_notification  # noqa: E501
-        self.__client_channel.on_command = self.__client_channel_on_command
-        self.__client_channel.on_session_finished = self.__client_channel_on_session_finished  # noqa: E501
-        self.__client_channel.on_session_failed = self.__client_channel_on_session_failed  # noqa: E501
+        self.client_channel = ClientChannel(self.transport, True, False)
+        self.client_channel.on_message = self.__client_channel_on_message
+        self.client_channel.on_notification = self.__client_channel_on_notification  # noqa: E501
+        self.client_channel.on_command = self.__client_channel_on_command
+        self.client_channel.on_session_finished = self.__client_channel_on_session_finished  # noqa: E501
+        self.client_channel.on_session_failed = self.__client_channel_on_session_failed  # noqa: E501
 
     def send_message(self, message: Message) -> None:
         """Send a Message.
@@ -223,7 +222,7 @@ class Client:
         Args:
             message (Message): Message to be sent
         """
-        self.__client_channel.send_message(message)
+        self.client_channel.send_message(message)
 
     def send_notification(self, notification: Notification) -> None:
         """Send a Notification.
@@ -231,7 +230,7 @@ class Client:
         Args:
             notification (Notification): Notification to be sent
         """
-        self.__client_channel.send_notification(notification)
+        self.client_channel.send_notification(notification)
 
     def send_command(self, command: Command) -> None:
         """Send a command.
@@ -239,7 +238,7 @@ class Client:
         Args:
             command (Command): Command to be sent
         """
-        self.__client_channel.send_command(command)
+        self.client_channel.send_command(command)
 
     async def process_command_async(
         self,
@@ -256,7 +255,7 @@ class Client:
             Command: The result Command
         """
         timeout = timeout if timeout else self.application.command_timeout
-        return await self.__client_channel.process_command_async(
+        return await self.client_channel.process_command_async(
             command,
             timeout
         )
@@ -344,6 +343,16 @@ class Client:
     def clear_session_failed_handlers(self) -> None:
         """Remove all session failed handlers."""
         self.__session_failed_handlers = []
+
+    def on_listening_changed(self, value: bool) -> None:
+        """Handle callback to client listening changes.
+
+        This method can be overwrited.
+
+        Args:
+            value (bool): the new listening value
+        """
+        pass
 
     def __add_handler(
         self,
@@ -440,7 +449,7 @@ class Client:
     def __client_channel_on_message(self, message: Message) -> None:
         should_notify = message.id and (
             not message.to or
-            self.__client_channel.local_node.lower().startswith(
+            self.client_channel.local_node.lower().startswith(
                 message.to.lower()
             )
         )
@@ -469,7 +478,7 @@ class Client:
             # Try to reconnect after the timeout
             sleep(timeout)
             if not self.__closing:
-                self.__transport = self.__transport_factory()
+                self.transport = self.__transport_factory()
                 self.initialize_client_channel()
                 ensure_future(self.connect_async())
 
