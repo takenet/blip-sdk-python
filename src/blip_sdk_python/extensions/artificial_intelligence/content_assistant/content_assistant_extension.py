@@ -48,11 +48,11 @@ class ContentAssistantExtension(ExtensionBase):
         skip: int = 0,
         take: int = 100,
         ascending: bool = False,
-        intents: list = None,
-        entities: list = None,
-        text: str = '',
-        begin_date: str = '',
-        end_date: str = ''
+        intents: str = None,
+        entities: str = None,
+        text: str = None,
+        begin_date: str = None,
+        end_date: str = None
     ) -> Command:
         """Get contents.
 
@@ -60,8 +60,8 @@ class ContentAssistantExtension(ExtensionBase):
             skip (int): Number of contents to be skipped.
             take (int): Number of contents to be take.
             ascending (bool): Sets ascending alphabetical order..
-            intents (list): Intents list.
-            entities (list): Entities list.
+            intents (str): Intents list.
+            entities (str): Entities list.
             text (str): text.
             begin_date (str): begin date of contents.
             end_date (str): end date of contents.
@@ -69,16 +69,19 @@ class ContentAssistantExtension(ExtensionBase):
         Returns:
             Command: Command response
         """
-        contents_resource_query = {
-            '$skip': skip,
-            '$take': take,
-            '$ascending': ascending,
-            'intents': intents,
-            'entities': entities,
-            'text': text,
-            'beginDate': begin_date,
-            'endDate': end_date
-        }
+        contents_resource_query = self.build_resource_query(
+            UriTemplates.CONTENT,
+            {
+                '$skip': skip,
+                '$take': take,
+                '$ascending': ascending,
+                'intents': intents,
+                'entities': entities,
+                'text': text,
+                'beginDate': begin_date,
+                'endDate': end_date
+            }
+        )
 
         return await self.process_command_async(
             self.create_get_command(contents_resource_query)
@@ -127,7 +130,7 @@ class ContentAssistantExtension(ExtensionBase):
             Command: Command response
         """
         content_result_command = self.create_set_command(
-            self.build_uri(UriTemplates.CONTENT_ID, id=id),
+            self.build_uri(UriTemplates.CONTENT_ID, id),
             content,
             ContentType.CONTENT_RESULT
         )
@@ -148,9 +151,9 @@ class ContentAssistantExtension(ExtensionBase):
         Returns:
             Command: Command response
         """
-        return self.process_command_async(
+        return await self.process_command_async(
             self.create_set_command(
-                self.build_uri(UriTemplates.CONTENT_ID, id=id),
+                self.build_uri(UriTemplates.CONTENT_ID, id),
                 combination,
                 ContentType.CONTENT_COMBINATION
             )
@@ -171,7 +174,7 @@ class ContentAssistantExtension(ExtensionBase):
             Command: Command response
         """
         combinations_command = self.create_set_command(
-            self.build_uri(UriTemplates.CONTENT_ID, id=id),
+            self.build_uri(UriTemplates.CONTENT_ID, id),
             type_n=ContentTypes.COLLECTION,
             resource={
                 'itemType': ContentType.CONTENT_COMBINATION,
