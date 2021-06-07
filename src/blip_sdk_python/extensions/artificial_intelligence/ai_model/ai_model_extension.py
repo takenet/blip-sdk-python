@@ -81,11 +81,13 @@ class AiModelExtension(ExtensionBase):
         Returns:
             Command: Command response
         """
-        return await self.create_set_command(
+        train_model_command = self.create_set_command(
             UriTemplates.MODELS,
             {},
             ContentType.MODEL_TRAINING
         )
+
+        return await self.process_command_async(train_model_command)
 
     async def publish_model(self, id: str) -> Command:
         """Publish an existing artificial intelligence model.
