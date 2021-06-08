@@ -1,4 +1,3 @@
-from src.blip_sdk_python.extensions.artificial_intelligence import entities
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture

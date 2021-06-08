@@ -9,9 +9,6 @@ POSTMASTER_AI = 'postmaster@ai'
 class IntentsExtension(ExtensionBase):
     """Extension to handle Blip AI Services."""
 
-    def __init__(self, client, domain):
-        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
-
     async def get_intent_async(self, id: str, deep: bool = False) -> Command:
         """Get a specific intent.
 
@@ -101,7 +98,8 @@ class IntentsExtension(ExtensionBase):
 
         set_intents_command = self.create_set_command(
             UriTemplates.INTENTIONS,
-            set_intents_resource
+            set_intents_resource,
+            ContentTypes.COLLECTION
         )
 
         return await self.process_command_async(set_intents_command)
@@ -118,7 +116,7 @@ class IntentsExtension(ExtensionBase):
         merge_intents_command = self.create_merge_command(
             UriTemplates.INTENTIONS,
             intent,
-            ContentTypes.COLLECTION
+            ContentType.INTENTION
         )
 
         return await self.process_command_async(merge_intents_command)
@@ -208,13 +206,13 @@ class IntentsExtension(ExtensionBase):
     async def set_intent_answers_async(
         self,
         id: str,
-        answers: dict
+        answers: list
     ) -> Command:
         """Set a intent answer.
 
         Args:
             id (str): Intent id
-            answers (dict): Answer
+            answers (list): Answers list
 
         Returns:
             Command: Command response
@@ -249,7 +247,7 @@ class IntentsExtension(ExtensionBase):
                 self.build_uri(
                     UriTemplates.INTENTION_ANSWER,
                     id,
-                    answerId=answer_id
+                    answer_id
                 )
             )
         )
@@ -315,8 +313,8 @@ class IntentsExtension(ExtensionBase):
             self.create_delete_command(
                 self.build_uri(
                     UriTemplates.INTENTION_QUESTION,
-                    id=id,
-                    questionId=question_id
+                    id,
+                    question_id
                 )
             )
         )
