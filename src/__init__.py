@@ -3,4 +3,5 @@ from .blip_sdk_python import (
     AiModelExtension, AnalyticsExtension, ContentAssistantExtension,
     EntitiesExtension, IntentsExtension, WordSetExtension,
     extensions, ExtensionBase, ChatExtension, MediaExtension,
+    Client
 )

@@ -1,8 +1,13 @@
-from typing import Any, Awaitable
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from lime_python.protocol.command import Command
 from ..extension_base import ExtensionBase
 from .uri_templates import UriTemplates
+
+if TYPE_CHECKING:
+    from ...client import Client
 
 POSTMASTER_MEDIA = 'postmaster@media'
 
@@ -10,14 +15,14 @@ POSTMASTER_MEDIA = 'postmaster@media'
 class MediaExtension(ExtensionBase):
     """Extension to handle blip media."""
 
-    def __init__(self, client: Any, domain: str) -> None:
+    def __init__(self, client: Client, domain: str) -> None:
         super().__init__(client, f'{POSTMASTER_MEDIA}.{domain}')
 
     async def get_upload_token_async(
         self,
         secure: bool = None,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get token to upload media.
 
         Args:
@@ -37,7 +42,7 @@ class MediaExtension(ExtensionBase):
         self,
         id: str,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Refresh an uploaded media.
 
         Args:

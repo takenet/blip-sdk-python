@@ -1,4 +1,6 @@
-from typing import Any, Dict
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Dict
 from urllib.parse import urlencode
 from uuid import uuid4
 
@@ -6,11 +8,14 @@ from lime_python import Command, CommandMethod
 
 from ..utilities import RequestUtilities
 
+if TYPE_CHECKING:
+    from ..client import Client
+
 
 class ExtensionBase:
     """Class base to all sdk extensions."""
 
-    def __init__(self, client: Any, to: str = None) -> None:
+    def __init__(self, client: Client, to: str = None) -> None:
         self.client = client
         self.to = to
 

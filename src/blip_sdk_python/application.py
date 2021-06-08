@@ -1,24 +1,29 @@
+from dataclasses import dataclass, field
+from typing import Dict
 from uuid import uuid4
 
-import lime_python
+from lime_python import (Authentication, GuestAuthentication,
+                         SessionCompression, SessionEncryption)
 
 
+@dataclass
 class Application:
     """Basic Application with default values."""
 
-    def __init__(self) -> None:
-        self.identifier = str(uuid4())
-        self.compression = lime_python.SessionCompression.NONE
-        self.encryption = lime_python.SessionEncryption.NONE
-        self.instance = 'default'
-        self.domain = 'msging.net'
-        self.scheme = 'wss'
-        self.hostname = 'ws.msging.net'
-        self.port = 443
-        self.precense = {
+    identifier: str = str(uuid4())
+    compression: str = SessionCompression.NONE
+    encryption: str = SessionEncryption.NONE
+    instance: str = 'default'
+    domain: str = 'msging.net'
+    scheme: str = 'wss'
+    hostname: str = 'ws.msging.net'
+    port: int = 443
+    presence: Dict[str, str] = field(
+        default_factory=lambda: {
             'status': 'available',
             'routingRule': 'identity'
         }
-        self.notify_consumed = True
-        self.authentication = lime_python.GuestAuthentication()
-        self.command_timeout = 6  # in seconds
+    )
+    notify_consumed: bool = True
+    authentication: Authentication = GuestAuthentication()
+    command_timeout: int = 6  # in seconds
