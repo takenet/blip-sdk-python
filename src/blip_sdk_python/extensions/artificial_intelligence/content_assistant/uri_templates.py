@@ -1,5 +1,5 @@
 class UriTemplates:
-    """Content Assistant URI Templates"""
+    """Content Assistant URI Templates."""
 
     CONTENT = '/content'
 
