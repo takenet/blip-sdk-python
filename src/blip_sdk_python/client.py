@@ -55,7 +55,7 @@ class Client:
 
         self.__extensions: Dict[Type, ExtensionBase] = {}
 
-        self.initialize_client_channel()
+        self.__initialize_client_channel()
 
     @property
     def chat_extension(self) -> ChatExtension:  # noqa: D102
@@ -203,19 +203,6 @@ class Client:
             return self.session_future.result()
         return await self.session_future
 
-    def initialize_client_channel(self) -> None:
-        """Initialize client channel listeners."""
-        self.transport.on_close = self.__transport_on_close
-
-        self.session_future = Future()
-
-        self.client_channel = ClientChannel(self.transport, True, False)
-        self.client_channel.on_message = self.__client_channel_on_message
-        self.client_channel.on_notification = self.__client_channel_on_notification  # noqa: E501
-        self.client_channel.on_command = self.__client_channel_on_command
-        self.client_channel.on_session_finished = self.__client_channel_on_session_finished  # noqa: E501
-        self.client_channel.on_session_failed = self.__client_channel_on_session_failed  # noqa: E501
-
     def send_message(self, message: Message) -> None:
         """Send a Message.
 
@@ -354,6 +341,19 @@ class Client:
         """
         pass
 
+    def __initialize_client_channel(self) -> None:
+        """Initialize client channel listeners."""
+        self.transport.on_close = self.__transport_on_close
+
+        self.session_future = Future()
+
+        self.client_channel = ClientChannel(self.transport, True, False)
+        self.client_channel.on_message = self.__client_channel_on_message
+        self.client_channel.on_notification = self.__client_channel_on_notification  # noqa: E501
+        self.client_channel.on_command = self.__client_channel_on_command
+        self.client_channel.on_session_finished = self.__client_channel_on_session_finished  # noqa: E501
+        self.client_channel.on_session_failed = self.__client_channel_on_session_failed  # noqa: E501
+
     def __add_handler(
         self,
         handler_list: List[Callable[[Session], None]],
@@ -479,7 +479,7 @@ class Client:
             sleep(timeout)
             if not self.__closing:
                 self.transport = self.__transport_factory()
-                self.initialize_client_channel()
+                self.__initialize_client_channel()
                 ensure_future(self.connect_async())
 
     def __notify_message_receivers(self, message: Message) -> None:
