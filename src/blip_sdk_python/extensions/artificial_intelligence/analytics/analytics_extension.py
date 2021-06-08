@@ -148,7 +148,6 @@ class AnalyticsExtension(ExtensionBase):
         Returns:
             Command: Command response
         """
-
         analyses_feedback_command = self.create_set_command(
             self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id),
             analyses,

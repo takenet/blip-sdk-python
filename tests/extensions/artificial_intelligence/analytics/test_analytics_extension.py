@@ -71,10 +71,10 @@ class TestAnalyticsExtension:
     ) -> None:
         # Arrange
         email = 'test@take.net'
-        filter = "requestDateTime ge datetimeoffset'2019-04-29T16:31:00.000Z' and requestDateTime le datetimeoffset'2019-05-30T16:31:00.000Z'"  # noqa E501
+        filter = "requestDateTime ge datetimeoffset'2019-04-29T16:31:00.000Z' and requestDateTime le datetimeoffset'2019-05-30T16:31:00.000Z'"  # noqa: E501
         analysis_by_email_resource = {
             'email': email,
-            'filter': f"/analysis?$filter=requestDateTime%20ge%20datetimeoffset'2019-04-29T16%3A31%3A00.000Z'%20and%20requestDateTime%20le%20datetimeoffset'2019-05-30T16%3A31%3A00.000Z'"  # noqa E501
+            'filter': "/analysis?$filter=requestDateTime%20ge%20datetimeoffset'2019-04-29T16%3A31%3A00.000Z'%20and%20requestDateTime%20le%20datetimeoffset'2019-05-30T16%3A31%3A00.000Z'"  # noqa: E501, WPS323
         }
 
         mock = mocker.MagicMock(

@@ -5,4 +5,4 @@ class UriTemplates:
 
     WORD_SET = '/word-sets/{0}'
 
-    WORD_SETS_ANALYSIS = '/word-sets-analysis '
+    WORD_SETS_ANALYSIS = '/word-sets-analysis'

@@ -47,7 +47,7 @@ class WordSetExtension(ExtensionBase):
             Command: Command response
         """
         set_resource_command = self.create_set_command(
-            self.build_uri(UriTemplates.WORD_SET_WORD, id),
+            self.build_uri(UriTemplates.WORD_SET, id),
             type_n=ContentTypes.COLLECTION,
             resource={
                 'itemType': ContentType.WORD_SET_WORD,
@@ -57,11 +57,11 @@ class WordSetExtension(ExtensionBase):
 
         return await self.process_command_async(set_resource_command)
 
-    async def set_word_set_async(self, word_set: any) -> Command:
+    async def set_word_set_async(self, word_set: dict) -> Command:
         """Create word set.
 
         Args:
-            word_set (any): word set object
+            word_set (dict): word set object
 
         Returns:
             Command: Command response
