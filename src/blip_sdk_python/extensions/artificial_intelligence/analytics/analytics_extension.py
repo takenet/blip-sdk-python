@@ -11,9 +11,6 @@ POSTMASTER_AI = 'postmaster@ai'
 class AnalyticsExtension(ExtensionBase):
     """Extension to handle Blip Analytics Services."""
 
-    def __init__(self, client, domain):
-        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
-
     async def get_analysis_async(
         self,
         skip: int = 0,
@@ -87,7 +84,8 @@ class AnalyticsExtension(ExtensionBase):
 
     async def set_analysis_by_email_async(
         self,
-        email_and_filter: dict,
+        email: str,
+        filter: str,
         intents: list = None,
         feedbacks: list = None,
         source: str = None,
@@ -99,7 +97,8 @@ class AnalyticsExtension(ExtensionBase):
         """Send analysis by email.
 
         Args:
-            email_and_filter (dict): email and filter
+            email (str): email to be sended
+            filter (str): filter OData
             intents (list): list of intents.
             feedbacks (list): feedback list.
             source (str): analysis source.
@@ -112,11 +111,11 @@ class AnalyticsExtension(ExtensionBase):
             Command: Command response
         """
         send_email_resource = {
-            'email': email_and_filter['email'],
+            'email': email,
             'filter': self.build_resource_query(
                 UriTemplates.ANALYSIS,
                 {
-                    '$filter': email_and_filter['filter'],
+                    '$filter': filter,
                     'intents': intents,
                     'feedbacks': feedbacks,
                     'source': source,

@@ -9,9 +9,6 @@ POSTMASTER_AI = 'postmaster@ai'
 class WordSetExtension(ExtensionBase):
     """Extension to handle Worsd Set AI Services."""
 
-    def __init__(self, client, domain):
-        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
-
     async def get_word_set_async(self, id: str, deep: bool = False) -> Command:
         """Get word set.
 
