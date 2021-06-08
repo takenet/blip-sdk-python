@@ -1,9 +1,8 @@
-from typing import Awaitable
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
 from src import MediaExtension
-from ...utilities import async_return
+from ...async_mock import async_return
 
 MEDIA_TO = 'postmaster@media.mging.net'
 
@@ -21,7 +20,7 @@ class TestMediaExtension:
         mocker: MockerFixture,
         target: MediaExtension,
         secure: bool
-    ) -> Awaitable:
+    ) -> None:
         # Arrange
         uri = f'/upload-media-uri?secure={secure}' if secure is not None else '/upload-media-uri'  # noqa: E501
         expected_command = Command('get', uri)
@@ -44,7 +43,7 @@ class TestMediaExtension:
         self,
         mocker: MockerFixture,
         target: MediaExtension
-    ) -> Awaitable:
+    ) -> None:
         # Arrange
         media = 'my-id'
         expected_command = Command(

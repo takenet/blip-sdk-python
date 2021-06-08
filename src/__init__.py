@@ -1,4 +1,5 @@
 from .blip_sdk_python import (
     Application,
-    extensions, ExtensionBase, ChatExtension, MediaExtension
+    extensions, ExtensionBase, ChatExtension, MediaExtension,
+    Client
 )

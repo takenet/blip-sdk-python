@@ -7,16 +7,15 @@ class RequestUtilities:
     @staticmethod
     def quote(
         uri: str,
-        safe: str = None,
-        encoding: str = None,
-        errors: str = None
+        *args
     ) -> str:
         """Url Encode.
 
         Args:
             uri (str): uri to encode
+            args: urllib.parse.quote original args
 
         Returns:
             str: encoded uri
         """  # noqa: DAR101
-        return quote(uri).replace('%24', '$')
+        return quote(uri, *args).replace('%24', '$')

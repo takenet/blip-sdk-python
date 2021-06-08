@@ -1,4 +1,4 @@
-from typing import Any, Awaitable
+from typing import Any
 
 from lime_python import Command
 from ..extension_base import ExtensionBase
@@ -16,7 +16,7 @@ class ChatExtension(ExtensionBase):
         message_date: str = None,
         refresh_expired_media: bool = None,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get chatbot message history.
 
         Args:
@@ -55,7 +55,7 @@ class ChatExtension(ExtensionBase):
         decrypt_content: bool = None,
         after: str = None,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get a user thread message history.
 
         Args:
@@ -78,7 +78,7 @@ class ChatExtension(ExtensionBase):
             kwargs: any other optional parameter not covered by the method
 
         Returns:
-            Awaitable[Command]: [description]
+            Command: [description]
         """
         uri = self.build_uri(UriTemplates.THREAD, identity)
         uri = self.build_resource_query(
@@ -101,7 +101,7 @@ class ChatExtension(ExtensionBase):
         self,
         identity: str,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Get user unread messages.
 
         Args:
@@ -120,7 +120,7 @@ class ChatExtension(ExtensionBase):
         identity: str,
         thread: Any,
         **kwargs
-    ) -> Awaitable[Command]:
+    ) -> Command:
         """Set a user thread.
 
         Args:

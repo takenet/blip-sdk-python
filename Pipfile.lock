@@ -58,13 +58,10 @@
                 "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b",
                 "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"
             ],
-            "markers": "sys_platform == 'win32'",
+            "markers": "platform_system == 'Windows'",
             "version": "==0.4.4"
         },
         "coverage": {
-            "extras": [
-                "toml"
-            ],
             "hashes": [
                 "sha256:004d1880bed2d97151facef49f08e255a20ceb6f9432df75f4eef018fdd5a78c",
                 "sha256:01d84219b5cdbfc8122223b39a954820929497a1cb1422824bb86b07b74594b6",
@@ -267,19 +264,19 @@
         },
         "lime-python": {
             "hashes": [
-                "sha256:37e855223ef9a2e9fe4e32418b194082f80e947ef1dacd2548cf3077c50c1ce6",
-                "sha256:53465bca167cc1fd921de4ff99446f3da2af694a6ceb8c0949f07cc835c449dd"
+                "sha256:52571c10efd1388520812ae8f7179625750b6d2f82ae115f65bf78063a17a91e",
+                "sha256:775a2eadf7928678003fbe7eef0d79a03aa19766255c15f0db48333bb09844f5"
             ],
             "index": "pypi",
-            "version": "==2.0.5"
+            "version": "==2.0.6"
         },
         "lime-transport-websocket": {
             "hashes": [
-                "sha256:03d2f89a64a494fe507e3f9998c8fd5ec061c2b4ca7ef52302cce8d227a6f074",
-                "sha256:6fc0b8fe8d5380d11112bd7ac11315baf373916ad10003308c1ce493622738c1"
+                "sha256:c01630241610f4cf1f2db6397e1f08a08839d8c2671bf7192b0c28e6136f3ac1",
+                "sha256:c57091ce1fa1af427338be07aaf18887b4278879896f8d95b7accf3d19a7de45"
             ],
             "index": "pypi",
-            "version": "==1.0.1"
+            "version": "==1.0.2"
         },
         "mccabe": {
             "hashes": [
@@ -391,11 +388,11 @@
         },
         "pytest-cov": {
             "hashes": [
-                "sha256:8535764137fecce504a49c2b742288e3d34bc09eed298ad65963616cc98fd45e",
-                "sha256:95d4933dcbbacfa377bb60b29801daa30d90c33981ab2a79e9ab4452c165066e"
+                "sha256:261bb9e47e65bd099c89c3edf92972865210c36813f80ede5277dceb77a4a62a",
+                "sha256:261ceeb8c227b726249b376b8526b600f38667ee314f910353fa318caa01f4d7"
             ],
             "index": "pypi",
-            "version": "==2.12.0"
+            "version": "==2.12.1"
         },
         "pytest-mock": {
             "hashes": [
@@ -564,7 +561,7 @@
                 "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b",
                 "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"
             ],
-            "markers": "sys_platform == 'win32'",
+            "markers": "platform_system == 'Windows'",
             "version": "==0.4.4"
         },
         "iniconfig": {
