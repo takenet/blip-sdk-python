@@ -1,6 +1,6 @@
 
 from typing import List
-from lime_python.protocol import Command
+from lime_python import Command, ContentTypes
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
@@ -148,14 +148,36 @@ class AnalyticsExtension(ExtensionBase):
         Returns:
             Command: Command response
         """
+
+        analyses_feedback_command = self.create_set_command(
+            self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id),
+            analyses,
+            ContentType.ANALYSIS_FEEDBACK
+        )
+        return await self.process_command_async(analyses_feedback_command)
+
+    async def set_analyses_feedback_async(
+        self,
+        id: str,
+        analyses: list
+    ) -> Command:
+        """Send feedbacks into analysis.
+
+        Args:
+            id (str): Command id
+            analyses (list): analyses
+
+        Returns:
+            Command: Command response
+        """
         analyses_feedback_resource = {
             'itemType': ContentType.ANALYSIS_FEEDBACK,
             'items': analyses
         }
         analyses_feedback_command = self.create_set_command(
-            self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id=id),
+            self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id),
             analyses_feedback_resource,
-            ContentType.ANALYSIS_FEEDBACK
+            ContentTypes.COLLECTION
         )
         return await self.process_command_async(analyses_feedback_command)
 
@@ -202,7 +224,7 @@ class AnalyticsExtension(ExtensionBase):
             Command: Command response
         """
         delete_analytics_command = self.create_delete_command(
-            self.build_uri(UriTemplates.ANALYTICS_ID, id=id)
+            self.build_uri(UriTemplates.ANALYTICS_ID, id)
         )
 
         return await self.process_command_async(delete_analytics_command)
