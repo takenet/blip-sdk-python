@@ -29,7 +29,8 @@ class EntitiesExtension(ExtensionBase):
         skip: int = 0,
         take: int = 100,
         ascending: bool = False,
-        name: str = None
+        name: str = None,
+        **kwargs
     ) -> Command:
         """Get all entities.
 
@@ -38,6 +39,7 @@ class EntitiesExtension(ExtensionBase):
             take (int): Numbers of entities to be taked.
             ascending (bool): Sets ascending alphabetical order..
             name (str): name.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -48,7 +50,8 @@ class EntitiesExtension(ExtensionBase):
                 '$skip': skip,
                 '$take': take,
                 '$ascending': ascending,
-                'name': name
+                'name': name,
+                **kwargs
             }
         )
 

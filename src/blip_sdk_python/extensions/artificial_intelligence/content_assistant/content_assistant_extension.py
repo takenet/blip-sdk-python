@@ -52,7 +52,8 @@ class ContentAssistantExtension(ExtensionBase):
         entities: str = None,
         text: str = None,
         begin_date: str = None,
-        end_date: str = None
+        end_date: str = None,
+        **kwargs
     ) -> Command:
         """Get contents.
 
@@ -65,6 +66,7 @@ class ContentAssistantExtension(ExtensionBase):
             text (str): text.
             begin_date (str): begin date of contents.
             end_date (str): end date of contents.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -79,7 +81,8 @@ class ContentAssistantExtension(ExtensionBase):
                 'entities': entities,
                 'text': text,
                 'beginDate': begin_date,
-                'endDate': end_date
+                'endDate': end_date,
+                **kwargs
             }
         )
 

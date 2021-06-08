@@ -92,7 +92,8 @@ class AnalyticsExtension(ExtensionBase):
         begin_date: str = None,
         end_date: str = None,
         min_score: str = None,
-        max_score: str = None
+        max_score: str = None,
+        **kwargs
     ) -> Command:
         """Send analysis by email.
 
@@ -106,6 +107,7 @@ class AnalyticsExtension(ExtensionBase):
             end_date (str): the end date of the request.
             min_score (str): min score to be considered.
             max_score (str): max score to be considered.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -122,7 +124,8 @@ class AnalyticsExtension(ExtensionBase):
                     'beginDate': begin_date,
                     'endDate': end_date,
                     'minScore': min_score,
-                    'maxScore': max_score
+                    'maxScore': max_score,
+                    **kwargs
                 }
             )
         }

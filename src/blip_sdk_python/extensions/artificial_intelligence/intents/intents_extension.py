@@ -9,12 +9,18 @@ POSTMASTER_AI = 'postmaster@ai'
 class IntentsExtension(ExtensionBase):
     """Extension to handle Blip AI Services."""
 
-    async def get_intent_async(self, id: str, deep: bool = False) -> Command:
+    async def get_intent_async(
+        self,
+        id: str,
+        deep: bool = False,
+        **kwargs
+    ) -> Command:
         """Get a specific intent.
 
         Args:
             id (str): Unique identifier of the command.
             deep (bool): deep.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -23,7 +29,8 @@ class IntentsExtension(ExtensionBase):
             self.build_resource_query(
                 self.build_uri(UriTemplates.INTENTION, id),
                 {
-                    'deep': deep
+                    'deep': deep,
+                    **kwargs
                 }
             )
         )
@@ -36,7 +43,8 @@ class IntentsExtension(ExtensionBase):
         take: int = 100,
         deep: bool = False,
         name: str = None,
-        ascending: bool = False
+        ascending: bool = False,
+        **kwargs
     ) -> Command:
         """Get all intents from a model.
 
@@ -46,6 +54,7 @@ class IntentsExtension(ExtensionBase):
             deep (bool): deep.
             name (str): intent name.
             ascending (bool): Sets ascending alphabetical order.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -57,7 +66,8 @@ class IntentsExtension(ExtensionBase):
                 '$take': take,
                 'deep': deep,
                 'name': name,
-                '$ascending': ascending
+                '$ascending': ascending,
+                **kwargs
             }
         )
 
@@ -175,7 +185,8 @@ class IntentsExtension(ExtensionBase):
         id: str,
         skip: int = 0,
         take: int = 100,
-        ascending: bool = False
+        ascending: bool = False,
+        **kwargs
     ) -> Command:
         """Get intent answers.
 
@@ -184,6 +195,7 @@ class IntentsExtension(ExtensionBase):
             skip (int): Number of answers to be skipped.
             take (int): Number of answers to be take.
             ascending (bool): Sets ascending alphabetical order.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -193,7 +205,8 @@ class IntentsExtension(ExtensionBase):
             {
                 '$skip': skip,
                 '$take': take,
-                '$ascending': ascending
+                '$ascending': ascending,
+                **kwargs
             }
         )
 

@@ -13,7 +13,8 @@ class AiModelExtension(ExtensionBase):
         self,
         skip: int = 0,
         take: int = 100,
-        ascending: bool = False
+        ascending: bool = False,
+        **kwargs
     ) -> Command:
         """Get models.
 
@@ -21,6 +22,7 @@ class AiModelExtension(ExtensionBase):
             skip (int): Number of models to be skipped.
             take (int): Number of model to be take.
             ascending (bool): Sets ascending alphabetical order.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -30,7 +32,8 @@ class AiModelExtension(ExtensionBase):
             {
                 '$skip': skip,
                 '$take': take,
-                '$ascending': ascending
+                '$ascending': ascending,
+                **kwargs
             }
         )
 

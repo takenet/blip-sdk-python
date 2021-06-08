@@ -9,12 +9,18 @@ POSTMASTER_AI = 'postmaster@ai'
 class WordSetExtension(ExtensionBase):
     """Extension to handle Worsd Set AI Services."""
 
-    async def get_word_set_async(self, id: str, deep: bool = False) -> Command:
+    async def get_word_set_async(
+        self,
+        id: str,
+        deep: bool = False,
+        **kwargs
+    ) -> Command:
         """Get word set.
 
         Args:
             id (str): word set id
             deep (bool): deep.
+            kwargs: any other optional parameter not covered by the method
 
         Returns:
             Command: Command response
@@ -22,7 +28,8 @@ class WordSetExtension(ExtensionBase):
         word_set_resource_query = self.build_resource_query(
             self.build_uri(UriTemplates.WORD_SET, id),
             {
-                'deep': deep
+                'deep': deep,
+                **kwargs
             }
         )
 
