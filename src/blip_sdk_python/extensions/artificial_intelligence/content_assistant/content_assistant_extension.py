@@ -1,13 +1,21 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from lime_python import Command, ContentTypes
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
+
+if TYPE_CHECKING:
+    from ....client import Client
 
 POSTMASTER_AI = 'postmaster@ai'
 
 
 class ContentAssistantExtension(ExtensionBase):
     """Extension to handle Content Assistant Services."""
+
+    def __init__(self, client: Client, domain: str) -> None:
+        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
     async def analyse_content_async(self, analysis: dict) -> Command:
         """Analyse content.

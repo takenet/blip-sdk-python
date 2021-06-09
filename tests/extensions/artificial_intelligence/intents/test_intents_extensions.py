@@ -4,12 +4,14 @@ from pytest_mock import MockerFixture
 from src import IntentsExtension
 from ....async_mock import async_return
 
+AI_TO = 'postmaster@ai.msging.net'
+
 
 class TestIntentsExtension:
 
     @fixture
     def target(self, mocker: MockerFixture) -> IntentsExtension:
-        yield IntentsExtension(mocker.MagicMock())
+        yield IntentsExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_intent_async(
@@ -21,6 +23,7 @@ class TestIntentsExtension:
         intent_id = '1234'
         intent_uri = f'/intentions/{intent_id}?deep=True'
         expected_command = Command('get', intent_uri)
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -42,6 +45,7 @@ class TestIntentsExtension:
         # Arrange
         intent_uri = '/intentions?$skip=0&$take=100&deep=True&$ascending=False'
         expected_command = Command('get', intent_uri)
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -70,6 +74,7 @@ class TestIntentsExtension:
             'application/vnd.iris.ai.intention+json',
             intent_resource
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -104,6 +109,7 @@ class TestIntentsExtension:
             'application/vnd.lime.collection+json',
             intent_resource
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -132,6 +138,7 @@ class TestIntentsExtension:
             'application/vnd.iris.ai.intention+json',
             intent
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -166,6 +173,7 @@ class TestIntentsExtension:
             'application/vnd.lime.collection+json',
             intents_resource
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -190,6 +198,7 @@ class TestIntentsExtension:
             'delete',
             f'/intentions/{intent_id}'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -213,6 +222,7 @@ class TestIntentsExtension:
             'delete',
             '/intentions'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -237,6 +247,7 @@ class TestIntentsExtension:
             'get',
             f'/intentions/{intent_id}/answers?$skip=0&$take=100&$ascending=False'  # noqa=E501
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -273,7 +284,7 @@ class TestIntentsExtension:
             'application/vnd.lime.collection+json',
             set_answer_resource
         )
-
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -299,6 +310,7 @@ class TestIntentsExtension:
             'delete',
             f'/intentions/{intent_id}/answers/{answer_id}'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -323,6 +335,7 @@ class TestIntentsExtension:
             'get',
             f'/intentions/{intent_id}/questions'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -361,7 +374,7 @@ class TestIntentsExtension:
             'application/vnd.lime.collection+json',
             set_question_resource
         )
-
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -387,6 +400,7 @@ class TestIntentsExtension:
             'delete',
             f'/intentions/{intent_id}/questions/{question_id}'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )

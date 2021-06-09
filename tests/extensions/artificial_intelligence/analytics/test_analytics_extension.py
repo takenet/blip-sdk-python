@@ -4,12 +4,14 @@ from pytest_mock import MockerFixture
 from src import AnalyticsExtension
 from ....async_mock import async_return
 
+AI_TO = 'postmaster@ai.msging.net'
+
 
 class TestAnalyticsExtension:
 
     @fixture
     def target(self, mocker: MockerFixture) -> AnalyticsExtension:
-        yield AnalyticsExtension(mocker.MagicMock())
+        yield AnalyticsExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_analysis_async(
@@ -28,6 +30,7 @@ class TestAnalyticsExtension:
             uri
         )
 
+        expected_command.to = AI_TO
         # Act
         await target.get_analysis_async(0, 100, True)
 
@@ -55,6 +58,7 @@ class TestAnalyticsExtension:
             'application/vnd.iris.ai.analysis-request+json',
             analysis_resource
         )
+        expected_command.to = AI_TO
 
         # Act
         await target.analyse_async(analysis_resource)
@@ -87,6 +91,7 @@ class TestAnalyticsExtension:
             'application/json',
             analysis_by_email_resource
         )
+        expected_command.to = AI_TO
 
         # Act
         await target.set_analysis_by_email_async(email, filter)
@@ -118,6 +123,7 @@ class TestAnalyticsExtension:
             'application/vnd.lime.collection+json',
             analysis_feedback_resource
         )
+        expected_command.to = AI_TO
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
@@ -149,6 +155,7 @@ class TestAnalyticsExtension:
             'application/vnd.iris.ai.analysis-feedback+json',
             analysis_feedback
         )
+        expected_command.to = AI_TO
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
@@ -174,6 +181,7 @@ class TestAnalyticsExtension:
             'get',
             f'/analytics/confusion-matrix/{analytics_id}'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -203,6 +211,7 @@ class TestAnalyticsExtension:
             'application/vnd.iris.ai.confusion-matrix+json',
             resource
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -227,6 +236,7 @@ class TestAnalyticsExtension:
             'delete',
             f'/analytics/confusion-matrix/{analytics_id}'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )

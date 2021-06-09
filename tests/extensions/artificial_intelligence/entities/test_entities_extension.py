@@ -4,12 +4,14 @@ from pytest_mock import MockerFixture
 from src import EntitiesExtension
 from ....async_mock import async_return
 
+AI_TO = 'postmaster@ai.msging.net'
+
 
 class TestEntitiesExtension:
 
     @fixture
     def target(self, mocker: MockerFixture) -> EntitiesExtension:
-        yield EntitiesExtension(mocker.MagicMock())
+        yield EntitiesExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_entity_async(
@@ -23,6 +25,8 @@ class TestEntitiesExtension:
             'get',
             f'/entities/{entitie_id}'
         )
+
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -71,6 +75,7 @@ class TestEntitiesExtension:
             'application/vnd.iris.ai.entity+json',
             entity_resource
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -96,6 +101,8 @@ class TestEntitiesExtension:
             'delete',
             f'/entities/{entitie_id}'
         )
+
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -120,6 +127,8 @@ class TestEntitiesExtension:
             'delete',
             '/entities'
         )
+
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )

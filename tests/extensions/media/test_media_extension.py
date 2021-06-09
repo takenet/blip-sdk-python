@@ -4,14 +4,14 @@ from pytest_mock import MockerFixture
 from src import MediaExtension
 from ...async_mock import async_return
 
-MEDIA_TO = 'postmaster@media.mging.net'
+MEDIA_TO = 'postmaster@media.msging.net'
 
 
 class TestMediaExtension:
 
     @fixture
     def target(self, mocker: MockerFixture) -> MediaExtension:
-        yield MediaExtension(mocker.MagicMock(), 'mging.net')
+        yield MediaExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.parametrize('secure', [True, False, None])
     @mark.asyncio
