@@ -16,8 +16,6 @@ isort = "*"
 pytest-asyncio = "*"
 pytest-mock = "*"
 lime-python = "*"
-lime-transport-websocket = "*"
-typing-extensions = "*"
 
 [requires]
 python_version = "3.8"

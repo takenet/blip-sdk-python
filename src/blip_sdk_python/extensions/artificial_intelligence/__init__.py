@@ -4,3 +4,4 @@ from .content_assistant import *
 from .entities import *
 from .intents import *
 from .word_set import *
+from .ai_extension import AiExtension

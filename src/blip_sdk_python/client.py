@@ -8,7 +8,8 @@ from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
                          Reason, ReasonCode, Session, SessionState, Transport)
 
 from .application import Application
-from .extensions import ChatExtension, ExtensionBase, MediaExtension
+from .extensions import (AiExtension, ChatExtension, ExtensionBase,
+                         MediaExtension)
 from .receiver import Receiver
 from .utilities import ClassUtilities
 
@@ -35,7 +36,7 @@ class Client:
         self.__message_receivers: List[Receiver] = []
         self.__notification_receivers: List[Receiver] = []
         self.__command_receivers: List[Receiver] = []
-        self.__command_resolves: list = []
+        self.__command_resolves: Dict[str, Callable] = {}
         self.__session_finished_handlers: List[Callable[[Session], None]] = []
         self.__session_failed_handlers: List[Callable[[Session], None]] = []
 
@@ -63,6 +64,10 @@ class Client:
     @property
     def media_extension(self) -> MediaExtension:  # noqa: D102
         return self.__get_extension(MediaExtension, self.application.domain)
+
+    @property
+    def ai_extension(self) -> AiExtension:  # noqa: D102
+        return self.__get_extension(AiExtension, self.application.domain)
 
     @property
     def listening(self) -> bool:  # noqa: D102
@@ -179,8 +184,8 @@ class Client:
             self.application.authentication,
             self.application.instance
         )
-        self.__send_presence_command()
-        self.__send_receipts_command()
+        await self.__send_presence_command_async()
+        await self.__send_receipts_command_async()
 
         self.listening = True
         self.__connection_try_count = 0
@@ -370,7 +375,7 @@ class Client:
         receiver_list.append(receiver)
         return lambda: receiver_list.remove(receiver)
 
-    def __send_presence_command(self) -> None:
+    async def __send_presence_command_async(self) -> Command:
         if isinstance(self.application.authentication, GuestAuthentication):
             return None
 
@@ -380,9 +385,9 @@ class Client:
             'application/vnd.lime.presence+json',
             self.application.presence
         )
-        self.send_command(command)
+        return await self.process_command_async(command)
 
-    def __send_receipts_command(self) -> None:
+    async def __send_receipts_command_async(self) -> Command:
         if isinstance(self.application.authentication, GuestAuthentication):
             return None
 
@@ -400,15 +405,15 @@ class Client:
                 ]
             }
         )
-        self.send_command(command)
+        return await self.process_command_async(command)
 
     def __client_channel_on_session_finished(self, session: Session) -> None:
         self.session_future.set_result(session)
-        self.__notify_handlers(self.session_finished_handlers, session)
+        self.__notify_handlers(self.__session_finished_handlers, session)
 
     def __client_channel_on_session_failed(self, session: Session) -> None:
         self.session_future.set_exception(session)
-        self.__notify_handlers(self.session_failed_handlers, session)
+        self.__notify_handlers(self.__session_failed_handlers, session)
 
     def __notify_handlers(
         self,
@@ -422,7 +427,7 @@ class Client:
         self,
         command: Command
     ) -> None:
-        resolve = self.__command_resolves[command.id]
+        resolve = self.__command_resolves.get(command.id)
         resolve = resolve if resolve else self.__reflect
         resolve(command)
 
