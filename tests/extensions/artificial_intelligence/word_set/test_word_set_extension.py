@@ -4,12 +4,14 @@ from pytest_mock import MockerFixture
 from src import WordSetExtension
 from ....async_mock import async_return
 
+AI_TO = 'postmaster@ai.msging.net'
+
 
 class TestWordSetExtension:
 
     @fixture
     def target(self, mocker: MockerFixture) -> WordSetExtension:
-        yield WordSetExtension(mocker.MagicMock())
+        yield WordSetExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_word_set_async(
@@ -23,6 +25,7 @@ class TestWordSetExtension:
             'get',
             f'/word-sets/{word_set_id}?deep=True'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -58,6 +61,7 @@ class TestWordSetExtension:
             'application/vnd.lime.collection+json',
             word_set_resource
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -86,6 +90,7 @@ class TestWordSetExtension:
             'application/vnd.iris.ai.word-set+json',
             item
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -114,6 +119,7 @@ class TestWordSetExtension:
             'application/vnd.iris.ai.word-set-analysis+json',
             item
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -138,6 +144,7 @@ class TestWordSetExtension:
             'delete',
             f'/word-sets/{word_set_id}'
         )
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )

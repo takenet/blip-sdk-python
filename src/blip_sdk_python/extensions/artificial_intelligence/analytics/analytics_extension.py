@@ -1,15 +1,24 @@
 
-from typing import List
+from __future__ import annotations
+from typing import TYPE_CHECKING, List
+
 from lime_python import Command, ContentTypes
+
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
+
+if TYPE_CHECKING:
+    from ....client import Client
 
 POSTMASTER_AI = 'postmaster@ai'
 
 
 class AnalyticsExtension(ExtensionBase):
     """Extension to handle Blip Analytics Services."""
+
+    def __init__(self, client: Client, domain: str) -> None:
+        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
     async def get_analysis_async(
         self,
@@ -56,11 +65,11 @@ class AnalyticsExtension(ExtensionBase):
             'beginDate': begin_date,
             'endDate': end_date,
             'minScore': min_score,
-            'maxScore': max_score
+            'maxScore': max_score,
+            **kwargs
         }
 
-        query_params = {**analysis_params, **kwargs}
-        uri = self.build_resource_query(UriTemplates.ANALYSIS, query_params)
+        uri = self.build_resource_query(UriTemplates.ANALYSIS, analysis_params)
         get_command = self.create_get_command(uri)
 
         return await self.process_command_async(get_command)
