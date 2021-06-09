@@ -404,11 +404,11 @@ class Client:
 
     def __client_channel_on_session_finished(self, session: Session) -> None:
         self.session_future.set_result(session)
-        self.__notify_handlers(self.session_finished_handlers, session)
+        self.__notify_handlers(self.__session_finished_handlers, session)
 
     def __client_channel_on_session_failed(self, session: Session) -> None:
         self.session_future.set_exception(session)
-        self.__notify_handlers(self.session_failed_handlers, session)
+        self.__notify_handlers(self.__session_failed_handlers, session)
 
     def __notify_handlers(
         self,
