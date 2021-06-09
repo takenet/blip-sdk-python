@@ -179,8 +179,8 @@ class Client:
             self.application.authentication,
             self.application.instance
         )
-        self.__send_presence_command()
-        self.__send_receipts_command()
+        await self.__send_presence_command_async()
+        await self.__send_receipts_command_async()
 
         self.listening = True
         self.__connection_try_count = 0
@@ -370,7 +370,7 @@ class Client:
         receiver_list.append(receiver)
         return lambda: receiver_list.remove(receiver)
 
-    def __send_presence_command(self) -> None:
+    async def __send_presence_command_async(self) -> Command:
         if isinstance(self.application.authentication, GuestAuthentication):
             return None
 
@@ -380,9 +380,9 @@ class Client:
             'application/vnd.lime.presence+json',
             self.application.presence
         )
-        self.send_command(command)
+        return await self.process_command_async(command)
 
-    def __send_receipts_command(self) -> None:
+    async def __send_receipts_command_async(self) -> Command:
         if isinstance(self.application.authentication, GuestAuthentication):
             return None
 
@@ -400,7 +400,7 @@ class Client:
                 ]
             }
         )
-        self.send_command(command)
+        return await self.process_command_async(command)
 
     def __client_channel_on_session_finished(self, session: Session) -> None:
         self.session_future.set_result(session)
