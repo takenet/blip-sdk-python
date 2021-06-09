@@ -1,4 +1,3 @@
-from tests.extensions.artificial_intelligence.entities.test_entities_extension import AI_TO
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
