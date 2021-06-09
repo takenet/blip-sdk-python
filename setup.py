@@ -11,7 +11,7 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
-    version='v2.0.3',
+    version='v1.0.0',
     license='apache-2.0',
     description='BLiP SDK Python',
     author='Gabriel Santos <gabrielr@take.net>, Luis Araújo <luisc@take.net>',

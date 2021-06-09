@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from lime_python.protocol.command import Command
+from lime_python import Command
 from ..extension_base import ExtensionBase
 from .uri_templates import UriTemplates
 

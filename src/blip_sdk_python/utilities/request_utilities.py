@@ -18,4 +18,4 @@ class RequestUtilities:
         Returns:
             str: encoded uri
         """  # noqa: DAR101
-        return quote(uri, *args).replace('%24', '$')
+        return quote(uri, *args).replace('%24', '$').replace('%27', "'")

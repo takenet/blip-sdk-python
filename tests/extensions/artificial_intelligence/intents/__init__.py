@@ -1,0 +1,1 @@
+from .test_intents_extensions import TestIntentsExtension
