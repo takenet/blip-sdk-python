@@ -1,6 +1,4 @@
 from typing import Callable
-from unittest import mock
-
 from lime_python import (Command, CommandMethod, CommandStatus,
                          GuestAuthentication, KeyAuthentication, Message,
                          Notification, NotificationEvent, PlainAuthentication,
