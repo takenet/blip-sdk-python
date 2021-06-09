@@ -6,7 +6,7 @@ from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
                          GuestAuthentication, KeyAuthentication, Message,
                          Notification, NotificationEvent, PlainAuthentication,
                          Reason, ReasonCode, Session, Transport)
-from lime_python.protocol.constants.session_state import SessionState
+from lime_python import SessionState
 
 from .application import Application
 from .extensions import ChatExtension, ExtensionBase, MediaExtension

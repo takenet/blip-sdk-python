@@ -1,4 +1,4 @@
-from lime_python.protocol import Command
+from lime_python import Command
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
