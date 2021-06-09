@@ -3,7 +3,6 @@ from lime_python import (Command, CommandMethod, CommandStatus,
                          GuestAuthentication, KeyAuthentication, Message,
                          Notification, NotificationEvent, PlainAuthentication,
                          Session, SessionState)
-from lime_transport_websocket import WebSocketTransport
 from pytest import fixture, mark, raises
 from pytest_mock import MockerFixture
 
@@ -19,8 +18,8 @@ FINISHED_SESSION = Session(SessionState.FINISHED)
 class TestClient:
 
     @fixture
-    def target(self) -> Client:
-        yield Client('127.0.0.1:8124', WebSocketTransport(), Application())
+    def target(self, mocker: MockerFixture) -> Client:
+        yield Client('127.0.0.1:8124', mocker.MagicMock(), Application())
 
     def test_get_chat_extension(self, target: Client) -> None:
         # Act
