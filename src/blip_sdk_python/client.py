@@ -35,7 +35,7 @@ class Client:
         self.__message_receivers: List[Receiver] = []
         self.__notification_receivers: List[Receiver] = []
         self.__command_receivers: List[Receiver] = []
-        self.__command_resolves: list = []
+        self.__command_resolves: Dict[str, Callable] = {}
         self.__session_finished_handlers: List[Callable[[Session], None]] = []
         self.__session_failed_handlers: List[Callable[[Session], None]] = []
 
@@ -422,7 +422,7 @@ class Client:
         self,
         command: Command
     ) -> None:
-        resolve = self.__command_resolves[command.id]
+        resolve = self.__command_resolves.get(command.id)
         resolve = resolve if resolve else self.__reflect
         resolve(command)
 
