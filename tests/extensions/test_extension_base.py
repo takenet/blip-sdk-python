@@ -1,6 +1,6 @@
 from asyncio import Future
 from typing import Any
-from lime_python.protocol.command import Command
+from lime_python import Command
 from pytest import mark
 from pytest_mock import MockerFixture
 from src import ExtensionBase

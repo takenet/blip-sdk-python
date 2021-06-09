@@ -5,8 +5,7 @@ from typing import Any, Callable, Dict, List, Type
 from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
                          GuestAuthentication, KeyAuthentication, Message,
                          Notification, NotificationEvent, PlainAuthentication,
-                         Reason, ReasonCode, Session, Transport)
-from lime_python.protocol.constants.session_state import SessionState
+                         Reason, ReasonCode, Session, SessionState, Transport)
 
 from .application import Application
 from .extensions import ChatExtension, ExtensionBase, MediaExtension
