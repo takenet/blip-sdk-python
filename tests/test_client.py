@@ -1,4 +1,5 @@
 from typing import Callable
+from unittest import mock
 
 from lime_python import (Command, CommandMethod, CommandStatus,
                          GuestAuthentication, KeyAuthentication, Message,
@@ -166,8 +167,10 @@ class TestClient:
         )
         target.client_channel.establish_session_async = session_mock
 
-        command_mock = mocker.MagicMock(return_value=None)
-        target.client_channel.send_command = command_mock
+        command_mock = mocker.MagicMock(
+            return_value=async_return(None)
+        )
+        target.process_command_async = command_mock
         target.application.authentication = KeyAuthentication('key')
 
         # Act
