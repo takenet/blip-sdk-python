@@ -4,12 +4,14 @@ from pytest_mock import MockerFixture
 from src import AiModelExtension
 from ....async_mock import async_return
 
+AI_TO = 'postmaster@ai.msging.net'
+
 
 class TestAiModelExtension:
 
     @fixture
     def target(self, mocker: MockerFixture) -> AiModelExtension:
-        yield AiModelExtension(mocker.MagicMock())
+        yield AiModelExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_models_async(
@@ -20,8 +22,10 @@ class TestAiModelExtension:
         # Arrange
         expected_command = Command(
             'get',
-            '/models?$skip=0&$take=100&$ascending=False'
+            '/models?$skip=0&$take=100&$ascending=False',
         )
+
+        expected_command.to = AI_TO
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
@@ -48,6 +52,7 @@ class TestAiModelExtension:
             '/model/1234'
         )
 
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -72,7 +77,7 @@ class TestAiModelExtension:
             'get',
             '/models/summary'
         )
-
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -97,7 +102,7 @@ class TestAiModelExtension:
             'get',
             '/models/last-trained-or-published'
         )
-
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -124,7 +129,7 @@ class TestAiModelExtension:
             'application/vnd.iris.ai.model-training+json',
             {}
         )
-
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -155,7 +160,7 @@ class TestAiModelExtension:
             'application/vnd.iris.ai.model-publishing+json',
             command_resource
         )
-
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )

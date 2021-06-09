@@ -4,12 +4,14 @@ from pytest_mock import MockerFixture
 from src import ContentAssistantExtension
 from ....async_mock import async_return
 
+AI_TO = 'postmaster@ai.msging.net'
+
 
 class TestContentAssistantExtension:
 
     @fixture
     def target(self, mocker: MockerFixture) -> ContentAssistantExtension:
-        yield ContentAssistantExtension(mocker.MagicMock())
+        yield ContentAssistantExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_analyse_content_async(
@@ -30,6 +32,8 @@ class TestContentAssistantExtension:
             'application/vnd.iris.ai.analysis-request+json',
             analysis_object
         )
+
+        expected_command.to = AI_TO
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
@@ -63,6 +67,8 @@ class TestContentAssistantExtension:
             combinations_object
         )
 
+        expected_command.to = AI_TO
+
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -90,6 +96,8 @@ class TestContentAssistantExtension:
         )
         target.client.process_command_async = mock
 
+        expected_command.to = AI_TO
+
         # Act
         await target.get_contents_async(0, 100)
 
@@ -111,6 +119,7 @@ class TestContentAssistantExtension:
             f'/content/{content_id}'
         )
 
+        expected_command.to = AI_TO
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -156,6 +165,8 @@ class TestContentAssistantExtension:
             content_result_object
         )
 
+        expected_command.to = AI_TO
+
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -192,6 +203,8 @@ class TestContentAssistantExtension:
             'application/vnd.iris.ai.content-combination+json',
             content_combination_object
         )
+
+        expected_command.to = AI_TO
 
         mock = mocker.MagicMock(
             return_value=async_return(None)
@@ -236,6 +249,8 @@ class TestContentAssistantExtension:
             content_combinations
         )
 
+        expected_command.to = AI_TO
+
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -261,6 +276,7 @@ class TestContentAssistantExtension:
             'delete',
             f'/content/{content_id}'
         )
+        expected_command.to = AI_TO
 
         mock = mocker.MagicMock(
             return_value=async_return(None)

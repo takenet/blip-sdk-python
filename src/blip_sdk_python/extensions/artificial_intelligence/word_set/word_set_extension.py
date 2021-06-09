@@ -1,13 +1,21 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from lime_python import Command, ContentTypes
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
+
+if TYPE_CHECKING:
+    from ....client import Client
 
 POSTMASTER_AI = 'postmaster@ai'
 
 
 class WordSetExtension(ExtensionBase):
     """Extension to handle Worsd Set AI Services."""
+
+    def __init__(self, client: Client, domain: str) -> None:
+        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
 
     async def get_word_set_async(
         self,
