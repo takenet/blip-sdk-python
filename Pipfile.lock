@@ -261,19 +261,19 @@
         },
         "lime-python": {
             "hashes": [
-                "sha256:9642e330c9456a98d2d2b1de65a2aa07652bc80cf7ae90658cebc8633eb22afd",
-                "sha256:f8a7d7d42fe25e6b2aedc99aaecc199303a6b70bb46789794030250e8fa339dc"
+                "sha256:4ca7043b52ddee2e06ee8e45cb9c9e6a12b616050ca50f8a094899758292e25d",
+                "sha256:cc475528434d729fbd2037dc1f56dda4331a2faa55b202459b9fe77c4c7679ac"
             ],
             "index": "pypi",
-            "version": "==2.0.8"
+            "version": "==2.0.9"
         },
         "lime-transport-websocket": {
             "hashes": [
-                "sha256:5d4977f47c5e4608016793355d99df768197f6519e5d126a5506ef1d87b72cb7",
-                "sha256:f7bb144078ddd54e5b980fa867b9afdaa2232dc8d7cb621cae350f1621fdafa4"
+                "sha256:8c5d354bdd5c079962c37b80b01f1907d842af3d4290a7b15dabf857d57ae566",
+                "sha256:a868ee479b1ed6644a1cee8ad0e771a075348665a6c87478937ac0350cf84c0c"
             ],
             "index": "pypi",
-            "version": "==1.0.3"
+            "version": "==1.0.4"
         },
         "mccabe": {
             "hashes": [
