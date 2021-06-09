@@ -8,7 +8,8 @@ from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
                          Reason, ReasonCode, Session, SessionState, Transport)
 
 from .application import Application
-from .extensions import ChatExtension, ExtensionBase, MediaExtension
+from .extensions import (AiExtension, ChatExtension, ExtensionBase,
+                         MediaExtension)
 from .receiver import Receiver
 from .utilities import ClassUtilities
 
@@ -63,6 +64,10 @@ class Client:
     @property
     def media_extension(self) -> MediaExtension:  # noqa: D102
         return self.__get_extension(MediaExtension, self.application.domain)
+
+    @property
+    def ai_extension(self) -> AiExtension:  # noqa: D102
+        return self.__get_extension(AiExtension, self.application.domain)
 
     @property
     def listening(self) -> bool:  # noqa: D102

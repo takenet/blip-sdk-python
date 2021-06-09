@@ -1,2 +1,2 @@
 [run]
-omit = tests/*, src/blip_sdk_python/application.py, src/blip_sdk_python/client_builder.py, src/blip_sdk_python/receiver.py
+omit = tests/*, src/blip_sdk_python/application.py, src/blip_sdk_python/client_builder.py, src/blip_sdk_python/receiver.py, src/blip_sdk_python/extensions/artificial_intelligence/ai_extension.py
