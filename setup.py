@@ -7,7 +7,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as file:
     long_description = file.read()
 
 setup(
-    name='blip_sdk_python',
+    name='blip_sdk',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,

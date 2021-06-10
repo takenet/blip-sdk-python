@@ -7,7 +7,7 @@ from pytest import fixture, mark, raises
 from pytest_mock import MockerFixture
 
 from src import Application, ChatExtension, Client, MediaExtension
-from src.blip_sdk_python.receiver import Receiver
+from src.blip_sdk.receiver import Receiver
 
 from .async_mock import async_return
 

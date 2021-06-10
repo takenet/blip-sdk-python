@@ -1,4 +1,4 @@
-from src.blip_sdk_python.utilities import ClassUtilities
+from src.blip_sdk.utilities import ClassUtilities
 from dataclasses import dataclass
 
 

@@ -1,5 +1,5 @@
 from pytest import mark
-from src.blip_sdk_python.utilities import RequestUtilities
+from src.blip_sdk.utilities import RequestUtilities
 
 
 class TestRequestUtilities:
