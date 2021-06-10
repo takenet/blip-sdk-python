@@ -508,7 +508,7 @@ class Client:
             self.send_notification(notification)
 
         try:
-            self.__notify_message_receivers(should_notify, message)
+            self.__notify_message_receivers(message)
             self.__notify(should_notify, message)
         except Exception as error:
             self.__notify(should_notify, message, error)
