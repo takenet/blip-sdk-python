@@ -1,4 +1,4 @@
-from asyncio import Future, ensure_future
+from asyncio import Future, ensure_future, get_event_loop
 from time import sleep
 from typing import Any, Callable, Dict, List, Type
 
@@ -207,6 +207,27 @@ class Client:
             return self.session_future.result()
         return await self.session_future
 
+    def connect(self) -> Session:
+        """Open a connection on transport and start application.
+
+        Raises:
+            ConnectionError: connection tries exceeded.
+
+        Returns:
+            Session: The connected Session
+        """  # noqa: DAR402
+        loop = get_event_loop()
+        return loop.run_until_complete(self.connect_async())
+
+    def close(self) -> Session:
+        """Close the open connection.
+
+        Returns:
+            Session: the closed session
+        """
+        loop = get_event_loop()
+        return loop.run_until_complete(self.close_async())
+
     def send_message(self, message: Message) -> None:
         """Send a Message.
 
@@ -249,6 +270,25 @@ class Client:
         return await self.client_channel.process_command_async(
             command,
             timeout
+        )
+
+    def process_command(
+        self,
+        command: Command,
+        timeout: float = None
+    ) -> Command:
+        """Process a Command and return the result.
+
+        Args:
+            command (Command): The Command to be processed
+            timeout (float): Timeout to process the Command
+
+        Returns:
+            Command: The result Command
+        """
+        loop = get_event_loop()
+        return loop.run_until_complete(
+            self.process_command_async(command, timeout)
         )
 
     def add_message_receiver(self, receiver: Receiver) -> Callable[[], None]:
