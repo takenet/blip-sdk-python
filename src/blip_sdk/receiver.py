@@ -31,6 +31,6 @@ class Receiver:
     @predicate.setter
     def predicate(self, value: Callable[[Envelope], bool]) -> None:
         if not isinstance(value, Callable):
-            self.__predicate = lambda: value in [True, None]  # noqa: WPS510
+            self.__predicate = lambda _: value in [True, None]  # noqa: WPS510
             return
         self.__predicate = value
