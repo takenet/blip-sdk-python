@@ -97,7 +97,6 @@ Each registration of a receiver returns a `handler` that can be used to cancel t
 ```python
 remove_receiver = client.add_message_receiver(Receiver(True, lambda env: env))
 
-// ...
 remove_receiver()
 ```
 
