@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from lime_python import Command
+from ..extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
-from ..extension_base import ExtensionBase
 
 if TYPE_CHECKING:
     from ...client import Client
@@ -12,7 +12,7 @@ ANALYTICS_DOMAIN = 'postmaster@analytics'
 
 
 class AnalyticsExtension(ExtensionBase):
-    """Extension to handle Blip event tracks"""
+    """Extension to handle Blip event tracks."""
 
     def __init__(self, client: Client, domain: str) -> None:
         super().__init__(client, f'{ANALYTICS_DOMAIN}.{domain}')
@@ -23,7 +23,6 @@ class AnalyticsExtension(ExtensionBase):
         Returns:
             Command: Commands response
         """
-
         return await self.process_command_async(
             self.create_get_command(UriTemplates.EVENTS_TRACK)
         )
@@ -36,7 +35,7 @@ class AnalyticsExtension(ExtensionBase):
         take: int = 10,
         **kwargs
     ) -> Command:
-        """Get specific event track
+        """Get specific event track.
 
         Args:
             event (str): event category name
@@ -48,7 +47,6 @@ class AnalyticsExtension(ExtensionBase):
         Returns:
             Command: Commands response
         """
-
         event_command = self.create_get_command(
             self.build_resource_query(
                 self.build_uri(UriTemplates.EVENT_TRACK, event),
@@ -69,7 +67,7 @@ class AnalyticsExtension(ExtensionBase):
         action: str,
         extras: dict
     ) -> Command:
-        """Create an event track
+        """Create an event track.
 
         Args:
             category (str): Event category
@@ -102,7 +100,7 @@ class AnalyticsExtension(ExtensionBase):
         take: int = 10,
         **kwargs
     ) -> Command:
-        """Get event track details
+        """Get event track details.
 
         Args:
             category (str): event category name
@@ -115,11 +113,9 @@ class AnalyticsExtension(ExtensionBase):
         Returns:
             Command: Commands response
         """
-
         event_command = self.create_get_command(
             self.build_resource_query(
-                self.build_uri(UriTemplates.EVENT_CATEGORY,
-                               category, action),
+                self.build_uri(UriTemplates.EVENT_CATEGORY, category, action),
                 {
                     'startDate': start_date,
                     'endDate': end_date,
@@ -135,7 +131,7 @@ class AnalyticsExtension(ExtensionBase):
         self,
         category: str
     ) -> Command:
-        """Delete a specific event category
+        """Delete a specific event category.
 
         Args:
             category (str): Event category name

@@ -2,8 +2,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-from .ai_model import AiModelExtension
 from .ai_analytics import AiAnalyticsExtension
+from .ai_model import AiModelExtension
 from .content_assistant import ContentAssistantExtension
 from .entities import EntitiesExtension
 from .intents import IntentsExtension

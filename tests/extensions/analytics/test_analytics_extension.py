@@ -51,7 +51,7 @@ class TestAnalyticsExtension:
         end_date = '2021-12-17'
         expected_command = Command(
             'get',
-            '/event-track/Saudacao%20Inicial?startDate=2020-12-17&endDate=2021-12-17&$take=10'
+            '/event-track/Saudacao%20Inicial?startDate=2020-12-17&endDate=2021-12-17&$take=10'  # noqa: E501
         )
 
         expected_command.to = ANALYTICS_TO
@@ -123,7 +123,7 @@ class TestAnalyticsExtension:
         end_date = '2021-12-17'
         expected_command = Command(
             'get',
-            '/event-track/Saudacao%20Inicial/Contador?startDate=2020-12-17&endDate=2021-12-17&$take=10'
+            '/event-track/Saudacao%20Inicial/Contador?startDate=2020-12-17&endDate=2021-12-17&$take=10'  # noqa: E501
         )
         expected_command.to = ANALYTICS_TO
         mock = mocker.MagicMock(
