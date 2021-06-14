@@ -1,23 +1,23 @@
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
-from src import AnalyticsExtension
+from src import AiAnalyticsExtension
 from ....async_mock import async_return
 
 AI_TO = 'postmaster@ai.msging.net'
 
 
-class TestAnalyticsExtension:
+class TestAiAnalyticsExtension:
 
     @fixture
-    def target(self, mocker: MockerFixture) -> AnalyticsExtension:
-        yield AnalyticsExtension(mocker.MagicMock(), 'msging.net')
+    def target(self, mocker: MockerFixture) -> AiAnalyticsExtension:
+        yield AiAnalyticsExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_analysis_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         uri = '/analysis?$skip=0&$take=100&$ascending=True'
@@ -42,7 +42,7 @@ class TestAnalyticsExtension:
     async def test_analyse_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         analysis_resource = {
@@ -71,7 +71,7 @@ class TestAnalyticsExtension:
     async def test_set_analysis_by_email_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         email = 'test@take.net'
@@ -104,7 +104,7 @@ class TestAnalyticsExtension:
     async def test_set_analysis_feedback_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         analysis_feedback = [
@@ -141,7 +141,7 @@ class TestAnalyticsExtension:
     async def test_set_analyses_feedback_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         analysis_feedback = {
@@ -173,7 +173,7 @@ class TestAnalyticsExtension:
     async def test_get_analytics_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         analytics_id = '1234'
@@ -198,7 +198,7 @@ class TestAnalyticsExtension:
     async def test_set_analytics_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         resource = {
@@ -228,7 +228,7 @@ class TestAnalyticsExtension:
     async def test_delete_analytics_async(
         self,
         mocker: MockerFixture,
-        target: AnalyticsExtension
+        target: AiAnalyticsExtension
     ) -> None:
         # Arrange
         analytics_id = '1234'

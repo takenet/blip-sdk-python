@@ -1,5 +1,5 @@
 class ContentType:
-    """AI Content type class."""
+    """AI Analytics Content type class."""
 
     ANALYSIS = 'application/vnd.iris.ai.analysis-request+json'
 
