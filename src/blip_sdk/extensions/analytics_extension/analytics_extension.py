@@ -8,31 +8,50 @@ from .uri_templates import UriTemplates
 if TYPE_CHECKING:
     from ...client import Client
 
-ANALYTICS_DOMAIN = 'postmaster@analytics'
+POSTMASTER_ANALYTICS = 'postmaster@analytics'
 
 
 class AnalyticsExtension(ExtensionBase):
     """Extension to handle Blip event tracks."""
 
     def __init__(self, client: Client, domain: str) -> None:
-        super().__init__(client, f'{ANALYTICS_DOMAIN}.{domain}')
+        super().__init__(client, f'{POSTMASTER_ANALYTICS}.{domain}')
 
-    async def get_events_async(self) -> Command:
+    async def get_events_async(
+        self,
+        skip: int = None,
+        take: int = None,
+        **kwargs
+    ) -> Command:
         """Get all events track.
+
+        Args:
+            skip (int): Number of events to be skipped
+            take (int): Number of events to be taken
+            kwargs: any other optional parameter not covered by the method.
 
         Returns:
             Command: Commands response
         """
         return await self.process_command_async(
-            self.create_get_command(UriTemplates.EVENTS_TRACK)
+            self.create_get_command(
+                self.build_resource_query(
+                    UriTemplates.EVENTS_TRACK,
+                    {
+                        '$skip': skip,
+                        '$take': take,
+                        **kwargs
+                    }
+                )
+            )
         )
 
     async def get_event_track_async(
         self,
         event: str,
-        start_date: str,
-        end_date: str,
-        take: int = 10,
+        start_date: str = None,
+        end_date: str = None,
+        take: int = None,
         **kwargs
     ) -> Command:
         """Get specific event track.
@@ -42,7 +61,7 @@ class AnalyticsExtension(ExtensionBase):
             start_date (str): start date
             end_date (str): end date
             take (int): Numbers of events to be taken
-            kwargs (any): key args.
+            kwargs: any other optional parameter not covered by the method.
 
         Returns:
             Command: Commands response
@@ -65,7 +84,7 @@ class AnalyticsExtension(ExtensionBase):
         self,
         category: str,
         action: str,
-        extras: dict
+        extras: dict = None
     ) -> Command:
         """Create an event track.
 
@@ -95,9 +114,9 @@ class AnalyticsExtension(ExtensionBase):
         self,
         category: str,
         action: str,
-        start_date: str,
-        end_date: str,
-        take: int = 10,
+        start_date: str = None,
+        end_date: str = None,
+        take: int = None,
         **kwargs
     ) -> Command:
         """Get event track details.
@@ -108,7 +127,7 @@ class AnalyticsExtension(ExtensionBase):
             start_date (str): start date
             end_date (str): end date
             take (int): Numbers of events to be taken
-            kwargs (any): key args.
+            kwargs: any other optional parameter not covered by the method.
 
         Returns:
             Command: Commands response

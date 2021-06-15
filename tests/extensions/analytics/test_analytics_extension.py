@@ -65,7 +65,8 @@ class TestAnalyticsExtension:
         await target.get_event_track_async(
             category,
             start_date,
-            end_date
+            end_date,
+            10
         )
 
         # Assert
