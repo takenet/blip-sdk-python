@@ -1,0 +1,1 @@
+from .test_ai_analytics_extension import TestAiAnalyticsExtension

@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 POSTMASTER_AI = 'postmaster@ai'
 
 
-class AnalyticsExtension(ExtensionBase):
-    """Extension to handle Blip Analytics Services."""
+class AiAnalyticsExtension(ExtensionBase):
+    """Extension to handle Blip AI Analytics Services."""
 
     def __init__(self, client: Client, domain: str) -> None:
         super().__init__(client, f'{POSTMASTER_AI}.{domain}')

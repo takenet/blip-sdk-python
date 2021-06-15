@@ -1,5 +1,5 @@
 class UriTemplates:
-    """Blip AI URI templates."""
+    """Blip AI Analytics URI templates."""
 
     ANALYSIS = '/analysis'
 
