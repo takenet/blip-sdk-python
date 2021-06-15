@@ -23,10 +23,7 @@ setup(
         'chatbot',
         'sdk'
     ],
-    install_requires=[
-        'lime-python',
-        'lime-transport-websocket'
-    ],
+    install_requires=['lime-python'],
     long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[
