@@ -79,7 +79,7 @@ client.add_message_receiver(Receiver(True, lambda m: print(m)))
 The next sample shows how to add a notification receiver with a filter for the `received` event type:
 
 ```python
-client.add_notification_receiver(Receiver(True, lamda n: print(n)))
+client.add_notification_receiver(Receiver(lambda n: n.event == NotificationEvent.RECEIVED, lamda n: print(n)))
 ```
 
 It's also possible to use a custom function as a filter:
@@ -88,9 +88,9 @@ Example of a message receiver filtering by the originator:
 
 ```python
 def filter_originator(message: Message):
-    if message.from == '553199990000@0mn.io':
-        return message
-client.add_message_receiver(Receiver(True, filter_originator))
+    return message.from == '553199990000@0mn.io'
+
+client.add_message_receiver(Receiver(filter_originator, lambda m: print(m)))
 ```
 
 Each registration of a receiver returns a `handler` that can be used to cancel the registration:
