@@ -1,9 +1,8 @@
-from humps import camelize
 from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Dict
 from urllib.parse import urlencode
 from uuid import uuid4
-
+from humps import camelize
 from lime_python import Command, CommandMethod
 
 from ..utilities import RequestUtilities
