@@ -1,5 +1,5 @@
-from __future__ import annotations
 from humps import camelize
+from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Dict
 from urllib.parse import urlencode
 from uuid import uuid4
