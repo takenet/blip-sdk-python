@@ -45,9 +45,6 @@ class TestAiAnalyticsExtension:
         target: AiAnalyticsExtension
     ) -> None:
         # Arrange
-        analysis_resource = {
-            'text': 'Test'
-        }
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -56,12 +53,12 @@ class TestAiAnalyticsExtension:
             'set',
             '/analysis',
             'application/vnd.iris.ai.analysis-request+json',
-            analysis_resource
+            {'text': 'input'}
         )
         expected_command.to = AI_TO
 
         # Act
-        await target.analyse_async(analysis_resource)
+        await target.analyse_async('input')
 
         # Assert
         expected_command.id = mock.call_args[0][0].id

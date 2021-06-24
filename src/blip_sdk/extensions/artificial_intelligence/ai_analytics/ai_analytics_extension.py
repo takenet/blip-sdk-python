@@ -74,15 +74,22 @@ class AiAnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(get_command)
 
-    async def analyse_async(self, analysis: dict) -> Command:
+    async def analyse_async(self, text: str, model_id: str = None) -> Command:
         """Analyzes an user sentence using a published model.
 
         Args:
-            analysis (dict): Input analysis
+            text (str): Input analysis
+            model_id (str): Model used to analyse. Defaults to last published.
 
         Returns:
             Command: Command response
         """
+        analysis = {
+            'text': text
+        }
+        if model_id:
+            analysis['modelId'] = model_id
+
         analyse_command = self.create_set_command(
             UriTemplates.ANALYSIS,
             type_n=ContentType.ANALYSIS,
