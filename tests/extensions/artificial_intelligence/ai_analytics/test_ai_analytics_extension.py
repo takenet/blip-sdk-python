@@ -145,8 +145,8 @@ class TestAiAnalyticsExtension:
     ) -> None:
         # Arrange
         analysis_feedback = {
-            'IntentionId': '1234',
-            'AnalysisId': '4321'
+            'intentionId': '1234',
+            'analysisId': '4321'
         }
 
         expected_command = Command(

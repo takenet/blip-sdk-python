@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from humps import camelize
 from typing import TYPE_CHECKING, Any, Dict
 from urllib.parse import urlencode
 from uuid import uuid4
@@ -59,6 +59,13 @@ class ExtensionBase:
         Returns:
             Command
         """
+        if isinstance(resource, dict):
+            resource = {
+                camelize(name): value
+                for name, value in resource.items()
+                if value is not None
+            }
+
         command = Command(CommandMethod.SET, uri, type_n, resource)
         command.id = id if id else str(uuid4())
 
