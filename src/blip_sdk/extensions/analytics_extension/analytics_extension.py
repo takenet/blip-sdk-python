@@ -17,13 +17,13 @@ class AnalyticsExtension(ExtensionBase):
     def __init__(self, client: Client, domain: str) -> None:
         super().__init__(client, f'{POSTMASTER_ANALYTICS}.{domain}')
 
-    async def get_events_async(
+    async def get_categories_async(
         self,
         skip: int = None,
         take: int = None,
         **kwargs
     ) -> Command:
-        """Get all events track.
+        """Get all bot categories.
 
         Args:
             skip (int): Number of events to be skipped
@@ -46,7 +46,7 @@ class AnalyticsExtension(ExtensionBase):
             )
         )
 
-    async def get_event_track_async(
+    async def get_category_actions_counter_async(
         self,
         event: str,
         start_date: str = None,
@@ -54,7 +54,7 @@ class AnalyticsExtension(ExtensionBase):
         take: int = None,
         **kwargs
     ) -> Command:
-        """Get specific event track.
+        """Get actions counter of a specified event category.
 
         Args:
             event (str): event category name
@@ -84,6 +84,7 @@ class AnalyticsExtension(ExtensionBase):
         self,
         category: str,
         action: str,
+        identity: str,
         extras: dict = None
     ) -> Command:
         """Create an event track.
@@ -91,6 +92,7 @@ class AnalyticsExtension(ExtensionBase):
         Args:
             category (str): Event category
             action (str): Event action
+            identity (str): User identity
             extras (dict): Event extras
 
         Returns:
@@ -99,6 +101,9 @@ class AnalyticsExtension(ExtensionBase):
         create_event_resource = {
             'category': category,
             'action': action,
+            'contact': {
+                'identity': identity
+            },
             'extras': extras
         }
 
@@ -110,7 +115,7 @@ class AnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(create_event_command)
 
-    async def get_event_track_details_async(
+    async def get_event_details_async(
         self,
         category: str,
         action: str,
@@ -119,7 +124,7 @@ class AnalyticsExtension(ExtensionBase):
         take: int = None,
         **kwargs
     ) -> Command:
-        """Get event track details.
+        """Get all details of an event (event extras for instance).
 
         Args:
             category (str): event category name
@@ -146,7 +151,7 @@ class AnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(event_command)
 
-    async def delete_event_track_async(
+    async def delete_category_async(
         self,
         category: str
     ) -> Command:
