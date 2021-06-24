@@ -199,8 +199,8 @@ class AiAnalyticsExtension(ExtensionBase):
         )
         return await self.process_command_async(analyses_feedback_command)
 
-    async def get_analytics_async(self, id: str = None) -> Command:
-        """Get analytics.
+    async def get_confusion_matrix_async(self, id: str = None) -> Command:
+        """Get confusion matrix.
 
         Args:
             id (str): Unique identifier of the command.
@@ -209,13 +209,16 @@ class AiAnalyticsExtension(ExtensionBase):
             Command: Command response
         """
         uri = self.build_uri(
-            UriTemplates.ANALYTICS_ID,
+            UriTemplates.CONFUSION_MATRIX_ID,
             id
-        ) if id else UriTemplates.ANALYTICS
+        ) if id else UriTemplates.CONFUSION_MATRIX
 
         return await self.process_command_async(self.create_get_command(uri))
 
-    async def set_analytics_async(self, confusion_matrix: dict) -> Command:
+    async def set_confusion_matrix_async(
+        self,
+        confusion_matrix: dict
+    ) -> Command:
         """Create a confusion matrix into your model.
 
         Args:
@@ -225,24 +228,24 @@ class AiAnalyticsExtension(ExtensionBase):
             Command: Command response
         """
         confusion_matrix_resource = self.create_set_command(
-            UriTemplates.ANALYTICS,
+            UriTemplates.CONFUSION_MATRIX,
             confusion_matrix,
             ContentType.CONFUSION_MATRIX
         )
 
         return await self.process_command_async(confusion_matrix_resource)
 
-    async def delete_analytics_async(self, id: str) -> Command:
-        """Delete analytics.
+    async def delete_confusion_matrix_async(self, id: str) -> Command:
+        """Delete confusion matrix.
 
         Args:
-            id (str): Analytics idd
+            id (str): Confusion matrix id
 
         Returns:
             Command: Command response
         """
         delete_analytics_command = self.create_delete_command(
-            self.build_uri(UriTemplates.ANALYTICS_ID, id)
+            self.build_uri(UriTemplates.CONFUSION_MATRIX_ID, id)
         )
 
         return await self.process_command_async(delete_analytics_command)

@@ -9,6 +9,6 @@ class UriTemplates:
 
     ANALYSIS_EMAIL = '/enhancement/send-by-email'
 
-    ANALYTICS = '/analytics/confusion-matrix'
+    CONFUSION_MATRIX = '/analytics/confusion-matrix'
 
-    ANALYTICS_ID = '/analytics/confusion-matrix/{0}'
+    CONFUSION_MATRIX_ID = '/analytics/confusion-matrix/{0}'

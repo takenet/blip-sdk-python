@@ -167,7 +167,7 @@ class TestAiAnalyticsExtension:
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_get_analytics_async(
+    async def test_get_confusion_matrix_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -185,14 +185,14 @@ class TestAiAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_analytics_async(analytics_id)
+        await target.get_confusion_matrix_async(analytics_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_set_analytics_async(
+    async def test_set_confusion_matrix_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -215,14 +215,14 @@ class TestAiAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.set_analytics_async(resource)
+        await target.set_confusion_matrix_async(resource)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_delete_analytics_async(
+    async def test_delete_confusion_matrix_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -240,7 +240,7 @@ class TestAiAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.delete_analytics_async(analytics_id)
+        await target.delete_confusion_matrix_async(analytics_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
