@@ -84,7 +84,7 @@ class AnalyticsExtension(ExtensionBase):
         self,
         category: str,
         action: str,
-        identity: str,
+        identity: str = None,
         extras: dict = None
     ) -> Command:
         """Create an event track.
@@ -101,11 +101,13 @@ class AnalyticsExtension(ExtensionBase):
         create_event_resource = {
             'category': category,
             'action': action,
-            'contact': {
-                'identity': identity
-            },
             'extras': extras
         }
+
+        if identity is not None:
+            create_event_resource['contact'] = {
+                'identity': identity
+            }
 
         create_event_command = self.create_set_command(
             UriTemplates.EVENTS_TRACK,
