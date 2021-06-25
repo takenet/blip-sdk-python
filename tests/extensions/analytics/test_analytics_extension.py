@@ -33,7 +33,7 @@ class TestAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_events_async()
+        await target.get_categories_async()
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
@@ -62,7 +62,7 @@ class TestAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_event_track_async(
+        await target.get_category_actions_counter_async(
             category,
             start_date,
             end_date,
@@ -75,6 +75,43 @@ class TestAnalyticsExtension:
 
     @mark.asyncio
     async def test_create_event_track_async(
+        self,
+        mocker: MockerFixture,
+        target: AnalyticsExtension
+    ) -> None:
+        # Assert
+        category = 'payments'
+        action = 'success-order'
+
+        expected_command = Command(
+            'set',
+            '/event-track',
+            'application/vnd.iris.eventTrack+json',
+            {
+                'category': category,
+                'action': action
+            }
+        )
+
+        expected_command.to = ANALYTICS_TO
+        mock = mocker.MagicMock(
+            return_value=async_return(None)
+        )
+
+        target.client.process_command_async = mock
+
+        # Act
+        await target.create_event_track_async(
+            category,
+            action
+        )
+
+        # Assert
+        expected_command.id = mock.call_args[0][0].id
+        mock.assert_called_once_with(expected_command)
+
+    @mark.asyncio
+    async def test_create_event_track_with_extras_async(
         self,
         mocker: MockerFixture,
         target: AnalyticsExtension
@@ -105,7 +142,58 @@ class TestAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.create_event_track_async(category, action, extras)
+        await target.create_event_track_async(
+            category,
+            action,
+            extras=extras
+        )
+
+        # Assert
+        expected_command.id = mock.call_args[0][0].id
+        mock.assert_called_once_with(expected_command)
+
+    @mark.asyncio
+    async def test_create_event_track_with_identity_and_extras_async(
+        self,
+        mocker: MockerFixture,
+        target: AnalyticsExtension
+    ) -> None:
+        # Assert
+        category = 'payments'
+        action = 'success-order'
+        identity = '123456@messenger.gw.msging.net'
+        extras = {
+            'nome': 'Teste'
+        }
+
+        expected_command = Command(
+            'set',
+            '/event-track',
+            'application/vnd.iris.eventTrack+json',
+            {
+                'category': category,
+                'action': action,
+                'contact': {
+                    'identity': identity
+                },
+                'extras': extras
+            }
+        )
+
+        expected_command.to = ANALYTICS_TO
+        mock = mocker.MagicMock(
+            return_value=async_return(None)
+        )
+
+        target.client.process_command_async = mock
+
+        # Act
+        await target.create_event_track_async(
+            category,
+            action,
+            identity,
+            extras
+        )
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
@@ -134,7 +222,7 @@ class TestAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_event_track_details_async(
+        await target.get_event_details_async(
             category,
             action,
             start_date,
@@ -166,7 +254,7 @@ class TestAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.delete_event_track_async(category)
+        await target.delete_category_async(category)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
