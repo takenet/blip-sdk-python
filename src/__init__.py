@@ -3,5 +3,5 @@ from .blip_sdk import (
     AiExtension, AiModelExtension, AiAnalyticsExtension, AnalyticsExtension, ContentAssistantExtension,
     EntitiesExtension, IntentsExtension, WordSetExtension,
     extensions, ExtensionBase, ChatExtension, MediaExtension,
-    Client, ClientBuilder
+    Client, ClientBuilder, Receiver
 )

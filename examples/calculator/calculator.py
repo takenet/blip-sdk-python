@@ -1,8 +1,7 @@
 import asyncio
 from lime_python import Message
 from lime_transport_websocket import WebSocketTransport
-from src import ClientBuilder
-from src.blip_sdk.receiver import Receiver
+from blip_sdk import ClientBuilder, Receiver
 
 IDENTIFIER = '{{your_identifier}}'
 ACCESS_KEY = '{{your_acces_key}}'
@@ -18,13 +17,15 @@ async def main_async():
         .build()
 
     await client.connect_async()
-    print('20')
-    client.add_message_receiver(Receiver(True, message_processor))
+    client.add_message_receiver(Receiver(message_predicate, message_processor))
+
+
+def message_predicate(message: Message) -> bool:
+    return message.type_n != 'application/vnd.lime.chatstate+json'
 
 
 def message_processor(message: Message) -> None:
-    if message.type_n != 'application/vnd.lime.chatstate+json':
-        return message
+    print(message)
 
 
 loop = asyncio.get_event_loop()
