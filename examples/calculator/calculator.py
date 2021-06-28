@@ -4,8 +4,8 @@ from lime_transport_websocket import WebSocketTransport
 from src import ClientBuilder
 from src.blip_sdk.receiver import Receiver
 
-IDENTIFIER = 'botnotificacaoworkchat'
-ACCESS_KEY = 'aGlhYmVFd3VWRThXV1hzNWJxYW0='
+IDENTIFIER = '{{your_identifier}}'
+ACCESS_KEY = '{{your_acces_key}}'
 
 
 async def main_async():
