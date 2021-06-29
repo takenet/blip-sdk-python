@@ -3,9 +3,9 @@ class UriTemplates:
 
     ANALYSIS = '/analysis'
 
-    ANALYSIS_FEEDBACK = '/analysis/{0}/feedback'
+    ANALYSIS_ID_FEEDBACK = '/analysis/{0}/feedback'
 
-    ANALYSES_FEEDBACK = '/analysis/feedback'
+    ANALYSIS_FEEDBACK = '/analysis/feedback'
 
     ANALYSIS_EMAIL = '/enhancement/send-by-email'
 

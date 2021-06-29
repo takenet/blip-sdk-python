@@ -2,7 +2,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, List
 
-from lime_python import Command, ContentTypes
+from lime_python import Command
 
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
@@ -155,47 +155,37 @@ class AiAnalyticsExtension(ExtensionBase):
 
     async def set_analysis_feedback_async(
         self,
-        id: str,
-        analyses: list
+        feedback: str | dict,
+        analysis_id: str = None,
+        intent_id: str = None
     ) -> Command:
         """Send feedbacks into analysis.
 
         Args:
-            id (str): Command id
-            analyses (list): analyses
+            feedback (str | dict): feedback type or object
+            analysis_id (str): the analysis id
+            intent_id (str): the intent id
 
         Returns:
             Command: Command response
         """
+        uri = UriTemplates.ANALYSIS_FEEDBACK
+        resource = feedback
+
+        if analysis_id and intent_id:
+            uri = self.build_uri(
+                UriTemplates.ANALYSIS_ID_FEEDBACK,
+                analysis_id
+            )
+            resource = {
+                'feedback': feedback,
+                'intentionId': intent_id
+            }
+
         analyses_feedback_command = self.create_set_command(
-            self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id),
-            analyses,
+            uri,
+            resource,
             ContentType.ANALYSIS_FEEDBACK
-        )
-        return await self.process_command_async(analyses_feedback_command)
-
-    async def set_analyses_feedback_async(
-        self,
-        id: str,
-        analyses: list
-    ) -> Command:
-        """Send feedbacks into analysis.
-
-        Args:
-            id (str): Command id
-            analyses (list): analyses
-
-        Returns:
-            Command: Command response
-        """
-        analyses_feedback_resource = {
-            'itemType': ContentType.ANALYSIS_FEEDBACK,
-            'items': analyses
-        }
-        analyses_feedback_command = self.create_set_command(
-            self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id),
-            analyses_feedback_resource,
-            ContentTypes.COLLECTION
         )
         return await self.process_command_async(analyses_feedback_command)
 
