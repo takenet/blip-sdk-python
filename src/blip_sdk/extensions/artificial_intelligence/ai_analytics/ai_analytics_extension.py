@@ -172,15 +172,15 @@ class AiAnalyticsExtension(ExtensionBase):
         uri = UriTemplates.ANALYSIS_FEEDBACK
         resource = feedback
 
-        if analysis_id and intent_id:
+        if analysis_id:
             uri = self.build_uri(
                 UriTemplates.ANALYSIS_ID_FEEDBACK,
                 analysis_id
             )
-            resource = {
-                'feedback': feedback,
-                'intentionId': intent_id
-            }
+            resource = {'feedback': feedback}
+
+            if intent_id:
+                resource.update({'intentionId': intent_id})
 
         analyses_feedback_command = self.create_set_command(
             uri,
