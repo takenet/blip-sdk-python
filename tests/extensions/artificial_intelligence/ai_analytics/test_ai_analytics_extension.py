@@ -91,7 +91,7 @@ class TestAiAnalyticsExtension:
         expected_command.to = AI_TO
 
         # Act
-        await target.set_analysis_by_email_async(email, filter)
+        await target.send_analysis_by_email_async(email, filter)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id

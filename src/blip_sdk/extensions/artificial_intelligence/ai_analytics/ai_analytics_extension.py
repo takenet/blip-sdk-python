@@ -98,10 +98,10 @@ class AiAnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(analyse_command)
 
-    async def set_analysis_by_email_async(
+    async def send_analysis_by_email_async(
         self,
         email: str,
-        filter: str,
+        filter: str = None,
         intents: list = None,
         feedbacks: list = None,
         source: str = None,
