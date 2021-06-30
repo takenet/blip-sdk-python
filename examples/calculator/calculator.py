@@ -19,18 +19,19 @@ client = ClientBuilder() \
 async def main_async():
 
     await client.connect_async()
-    client.add_message_receiver(Receiver(message_predicate, message_processor))
+    client.add_message_receiver(
+        Receiver(message_predicate, message_processor_async))
 
 
 def message_predicate(message: Message) -> bool:
     return message.type_n != 'application/vnd.lime.chatstate+json'
 
 
-def message_processor(message: Message) -> None:
+async def message_processor_async(message: Message) -> None:
     user_id = get_user_id(message.from_n)
-    user_state = get_context(user_id, 'user_state')
+    user_state = await get_context_async(user_id, 'user_state')
     if(user_state == 'no_content' or user_state == 0):
-        calculator_menu(user_id)
+        calculator_menu_async(user_id)
     if isinstance(message.content, int):
         print('a')
     else:
@@ -46,7 +47,7 @@ def exception(user_id: str, message: str):
     )
 
 
-def calculator_menu(user_id: str):
+async def calculator_menu_async(user_id: str):
     client.send_message(
         Message(
             'text/plain',
@@ -54,7 +55,7 @@ def calculator_menu(user_id: str):
             ' (-) para subtração e (+) para soma'
         )
     )
-    set_context(user_id, 'text/plain', 'user_state', '1')
+    await set_context_async(user_id, 'text/plain', 'user_state', '1')
 
 
 def send_message_with_composing(user_id: str, message_type: str, message_content: str):
@@ -79,7 +80,7 @@ def send_message_with_composing(user_id: str, message_type: str, message_content
         }))
 
 
-def set_context(
+async def set_context_async(
     user_id: str,
     variable_type: str,
     variable_name: str,
@@ -91,10 +92,10 @@ def set_context(
         variable_type,
         resource=value
     )
-    client.process_command(set_context_body)
+    await client.process_command_async(set_context_body)
 
 
-def get_context(
+async def get_context_async(
     user_id: str,
     variable_name: str
 ) -> str:
@@ -102,7 +103,7 @@ def get_context(
         'get',
         f'/context/{user_id}/{variable_name}',
     )
-    user_context = client.process_command(get_context_body)
+    user_context = client.process_command_async(get_context_body)
     if user_context['status'] == 'success':
         return user_context['resource']
     else:
