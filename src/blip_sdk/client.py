@@ -2,6 +2,7 @@ from asyncio import Future, ensure_future, get_event_loop, iscoroutinefunction
 from time import sleep
 from typing import Any, Awaitable, Callable, Dict, List, Type
 
+import nest_asyncio
 from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
                          GuestAuthentication, KeyAuthentication, Message,
                          Notification, NotificationEvent, PlainAuthentication,
@@ -12,6 +13,8 @@ from .extensions import (AiExtension, AnalyticsExtension, ChatExtension,
                          ExtensionBase, MediaExtension)
 from .receiver import Receiver
 from .utilities import ClassUtilities
+
+nest_asyncio.apply()
 
 MAX_CONNECTION_TRY_COUNT = 10
 

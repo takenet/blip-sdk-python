@@ -16,6 +16,7 @@ isort = "*"
 pytest-asyncio = "*"
 pytest-mock = "*"
 lime-python = "*"
+nest-asyncio = "*"
 
 [requires]
 python_version = "3.8"
