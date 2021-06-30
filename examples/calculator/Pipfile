@@ -11,5 +11,5 @@ bot = "python calculator.py"
 
 [packages]
 lime-transport-websocket = "*"
-blip-sdk = {path = "./../.."}
 autopep8 = "*"
+blip-sdk = {path = "./../.."}
