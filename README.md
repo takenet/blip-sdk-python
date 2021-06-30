@@ -79,7 +79,7 @@ client.add_message_receiver(Receiver(True, lambda m: print(m)))
 The next sample shows how to add a notification receiver with a filter for the `received` event type:
 
 ```python
-client.add_notification_receiver(Receiver(lambda n: n.event == NotificationEvent.RECEIVED, lamda n: print(n)))
+client.add_notification_receiver(Receiver(lambda n: n.event == NotificationEvent.RECEIVED, lambda n: print(n)))
 ```
 
 It's also possible to use a custom function as a filter:

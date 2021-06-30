@@ -2,7 +2,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, List
 
-from lime_python import Command, ContentTypes
+from lime_python import Command
 
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
@@ -74,15 +74,22 @@ class AiAnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(get_command)
 
-    async def analyse_async(self, analysis: dict) -> Command:
+    async def analyse_async(self, text: str, model_id: str = None) -> Command:
         """Analyzes an user sentence using a published model.
 
         Args:
-            analysis (dict): Input analysis
+            text (str): Input analysis
+            model_id (str): Model used to analyse. Defaults to last published.
 
         Returns:
             Command: Command response
         """
+        analysis = {
+            'text': text
+        }
+        if model_id:
+            analysis['modelId'] = model_id
+
         analyse_command = self.create_set_command(
             UriTemplates.ANALYSIS,
             type_n=ContentType.ANALYSIS,
@@ -91,10 +98,10 @@ class AiAnalyticsExtension(ExtensionBase):
 
         return await self.process_command_async(analyse_command)
 
-    async def set_analysis_by_email_async(
+    async def send_analysis_by_email_async(
         self,
         email: str,
-        filter: str,
+        filter: str = None,
         intents: list = None,
         feedbacks: list = None,
         source: str = None,
@@ -148,52 +155,42 @@ class AiAnalyticsExtension(ExtensionBase):
 
     async def set_analysis_feedback_async(
         self,
-        id: str,
-        analyses: list
+        feedback: str | dict,
+        analysis_id: str = None,
+        intent_id: str = None
     ) -> Command:
         """Send feedbacks into analysis.
 
         Args:
-            id (str): Command id
-            analyses (list): analyses
+            feedback (str | dict): feedback type or object
+            analysis_id (str): the analysis id
+            intent_id (str): the intent id
 
         Returns:
             Command: Command response
         """
+        uri = UriTemplates.ANALYSIS_FEEDBACK
+        resource = feedback
+
+        if analysis_id:
+            uri = self.build_uri(
+                UriTemplates.ANALYSIS_ID_FEEDBACK,
+                analysis_id
+            )
+            resource = {'feedback': feedback}
+
+            if intent_id:
+                resource.update({'intentionId': intent_id})
+
         analyses_feedback_command = self.create_set_command(
-            self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id),
-            analyses,
+            uri,
+            resource,
             ContentType.ANALYSIS_FEEDBACK
         )
         return await self.process_command_async(analyses_feedback_command)
 
-    async def set_analyses_feedback_async(
-        self,
-        id: str,
-        analyses: list
-    ) -> Command:
-        """Send feedbacks into analysis.
-
-        Args:
-            id (str): Command id
-            analyses (list): analyses
-
-        Returns:
-            Command: Command response
-        """
-        analyses_feedback_resource = {
-            'itemType': ContentType.ANALYSIS_FEEDBACK,
-            'items': analyses
-        }
-        analyses_feedback_command = self.create_set_command(
-            self.build_uri(UriTemplates.ANALYSES_FEEDBACK, id),
-            analyses_feedback_resource,
-            ContentTypes.COLLECTION
-        )
-        return await self.process_command_async(analyses_feedback_command)
-
-    async def get_analytics_async(self, id: str = None) -> Command:
-        """Get analytics.
+    async def get_confusion_matrix_async(self, id: str = None) -> Command:
+        """Get confusion matrix.
 
         Args:
             id (str): Unique identifier of the command.
@@ -202,13 +199,16 @@ class AiAnalyticsExtension(ExtensionBase):
             Command: Command response
         """
         uri = self.build_uri(
-            UriTemplates.ANALYTICS_ID,
+            UriTemplates.CONFUSION_MATRIX_ID,
             id
-        ) if id else UriTemplates.ANALYTICS
+        ) if id else UriTemplates.CONFUSION_MATRIX
 
         return await self.process_command_async(self.create_get_command(uri))
 
-    async def set_analytics_async(self, confusion_matrix: dict) -> Command:
+    async def set_confusion_matrix_async(
+        self,
+        confusion_matrix: dict
+    ) -> Command:
         """Create a confusion matrix into your model.
 
         Args:
@@ -218,24 +218,24 @@ class AiAnalyticsExtension(ExtensionBase):
             Command: Command response
         """
         confusion_matrix_resource = self.create_set_command(
-            UriTemplates.ANALYTICS,
+            UriTemplates.CONFUSION_MATRIX,
             confusion_matrix,
             ContentType.CONFUSION_MATRIX
         )
 
         return await self.process_command_async(confusion_matrix_resource)
 
-    async def delete_analytics_async(self, id: str) -> Command:
-        """Delete analytics.
+    async def delete_confusion_matrix_async(self, id: str) -> Command:
+        """Delete confusion matrix.
 
         Args:
-            id (str): Analytics idd
+            id (str): Confusion matrix id
 
         Returns:
             Command: Command response
         """
         delete_analytics_command = self.create_delete_command(
-            self.build_uri(UriTemplates.ANALYTICS_ID, id)
+            self.build_uri(UriTemplates.CONFUSION_MATRIX_ID, id)
         )
 
         return await self.process_command_async(delete_analytics_command)

@@ -1,6 +1,6 @@
-from asyncio import Future, ensure_future, get_event_loop
+from asyncio import Future, ensure_future, get_event_loop, iscoroutinefunction
 from time import sleep
-from typing import Any, Callable, Dict, List, Type
+from typing import Any, Awaitable, Callable, Dict, List, Type
 
 from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
                          GuestAuthentication, KeyAuthentication, Message,
@@ -223,8 +223,7 @@ class Client:
         Returns:
             Session: The connected Session
         """  # noqa: DAR402
-        loop = get_event_loop()
-        return loop.run_until_complete(self.connect_async())
+        return self.__ensure_run_action(self.connect_async)
 
     def close(self) -> Session:
         """Close the open connection.
@@ -232,8 +231,7 @@ class Client:
         Returns:
             Session: the closed session
         """
-        loop = get_event_loop()
-        return loop.run_until_complete(self.close_async())
+        return self.__ensure_run_action(self.close_async)
 
     def send_message(self, message: Message) -> None:
         """Send a Message.
@@ -293,9 +291,10 @@ class Client:
         Returns:
             Command: The result Command
         """
-        loop = get_event_loop()
-        return loop.run_until_complete(
-            self.process_command_async(command, timeout)
+        return self.__ensure_run_action(
+            self.process_command_async,
+            command,
+            timeout
         )
 
     def add_message_receiver(self, receiver: Receiver) -> Callable[[], None]:
@@ -468,7 +467,7 @@ class Client:
         envelope: Envelope
     ) -> None:
         for handler in handler_list:
-            handler(envelope)
+            self.__ensure_run_action(handler, envelope)
 
     def __client_channel_on_command(
         self,
@@ -491,8 +490,8 @@ class Client:
         receiver_list: List[Receiver],
         envelope: Envelope
     ) -> None:
-        [   # noqa: WPS428
-            receiver.callback(envelope)
+        [  # noqa: WPS428
+            self.__ensure_run_action(receiver.callback, envelope)
             for receiver in receiver_list
             if receiver.predicate(envelope)
         ]
@@ -537,7 +536,7 @@ class Client:
         for receiver in self.__message_receivers:
             result: bool = None
             if receiver.predicate(message):
-                result = receiver.callback(message)
+                result = self.__ensure_run_action(receiver.callback, message)
             if result is False:
                 raise ValueError
 
@@ -580,3 +579,9 @@ class Client:
 
     def __reflect(self, any: Any) -> Any:
         return any
+
+    def __ensure_run_action(self, action_async: Awaitable, *args) -> Any:
+        if iscoroutinefunction(action_async):
+            loop = get_event_loop()
+            return loop.run_until_complete(action_async(*args))
+        return action_async(*args)

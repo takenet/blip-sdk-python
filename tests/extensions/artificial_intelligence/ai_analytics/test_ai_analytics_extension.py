@@ -45,9 +45,6 @@ class TestAiAnalyticsExtension:
         target: AiAnalyticsExtension
     ) -> None:
         # Arrange
-        analysis_resource = {
-            'text': 'Test'
-        }
         mock = mocker.MagicMock(
             return_value=async_return(None)
         )
@@ -56,19 +53,19 @@ class TestAiAnalyticsExtension:
             'set',
             '/analysis',
             'application/vnd.iris.ai.analysis-request+json',
-            analysis_resource
+            {'text': 'input'}
         )
         expected_command.to = AI_TO
 
         # Act
-        await target.analyse_async(analysis_resource)
+        await target.analyse_async('input')
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_set_analysis_by_email_async(
+    async def test_send_analysis_by_email_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -94,51 +91,14 @@ class TestAiAnalyticsExtension:
         expected_command.to = AI_TO
 
         # Act
-        await target.set_analysis_by_email_async(email, filter)
+        await target.send_analysis_by_email_async(email, filter)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_set_analysis_feedback_async(
-        self,
-        mocker: MockerFixture,
-        target: AiAnalyticsExtension
-    ) -> None:
-        # Arrange
-        analysis_feedback = [
-            {
-                'IntentionId': '1234',
-                'AnalysisId': '4321'
-            }
-        ]
-        analysis_feedback_resource = {
-            'itemType': 'application/vnd.iris.ai.analysis-feedback+json',
-            'items': analysis_feedback
-        }
-        expected_command = Command(
-            'set',
-            '/analysis/feedback',
-            'application/vnd.lime.collection+json',
-            analysis_feedback_resource
-        )
-        expected_command.to = AI_TO
-
-        mock = mocker.MagicMock(
-            return_value=async_return(None)
-        )
-        target.client.process_command_async = mock
-
-        # Act
-        await target.set_analyses_feedback_async('1234', analysis_feedback)
-
-        # Assert
-        expected_command.id = mock.call_args[0][0].id
-        mock.assert_called_once_with(expected_command)
-
-    @mark.asyncio
-    async def test_set_analyses_feedback_async(
+    async def test_set_analysis_feedback_dict_feedback_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -148,7 +108,6 @@ class TestAiAnalyticsExtension:
             'intentionId': '1234',
             'analysisId': '4321'
         }
-
         expected_command = Command(
             'set',
             '/analysis/feedback',
@@ -163,14 +122,51 @@ class TestAiAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.set_analysis_feedback_async('1234', analysis_feedback)
+        await target.set_analysis_feedback_async(analysis_feedback)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_get_analytics_async(
+    async def test_set_analysis_feedback_async(
+        self,
+        mocker: MockerFixture,
+        target: AiAnalyticsExtension
+    ) -> None:
+        # Arrange
+        analysis_id = '1234'
+        intent_id = '4321'
+        analysis_feedback = {
+            'feedback': 'rejected',
+            'intentionId': intent_id
+        }
+        expected_command = Command(
+            'set',
+            f'/analysis/{analysis_id}/feedback',
+            'application/vnd.iris.ai.analysis-feedback+json',
+            analysis_feedback
+        )
+        expected_command.to = AI_TO
+
+        mock = mocker.MagicMock(
+            return_value=async_return(None)
+        )
+        target.client.process_command_async = mock
+
+        # Act
+        await target.set_analysis_feedback_async(
+            'rejected',
+            analysis_id,
+            intent_id
+        )
+
+        # Assert
+        expected_command.id = mock.call_args[0][0].id
+        mock.assert_called_once_with(expected_command)
+
+    @mark.asyncio
+    async def test_get_confusion_matrix_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -188,14 +184,14 @@ class TestAiAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.get_analytics_async(analytics_id)
+        await target.get_confusion_matrix_async(analytics_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_set_analytics_async(
+    async def test_set_confusion_matrix_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -218,14 +214,14 @@ class TestAiAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.set_analytics_async(resource)
+        await target.set_confusion_matrix_async(resource)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id
         mock.assert_called_once_with(expected_command)
 
     @mark.asyncio
-    async def test_delete_analytics_async(
+    async def test_delete_confusion_matrix_async(
         self,
         mocker: MockerFixture,
         target: AiAnalyticsExtension
@@ -243,7 +239,7 @@ class TestAiAnalyticsExtension:
         target.client.process_command_async = mock
 
         # Act
-        await target.delete_analytics_async(analytics_id)
+        await target.delete_confusion_matrix_async(analytics_id)
 
         # Assert
         expected_command.id = mock.call_args[0][0].id

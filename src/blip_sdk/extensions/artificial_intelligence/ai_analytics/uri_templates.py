@@ -3,12 +3,12 @@ class UriTemplates:
 
     ANALYSIS = '/analysis'
 
-    ANALYSIS_FEEDBACK = '/analysis/{0}/feedback'
+    ANALYSIS_ID_FEEDBACK = '/analysis/{0}/feedback'
 
-    ANALYSES_FEEDBACK = '/analysis/feedback'
+    ANALYSIS_FEEDBACK = '/analysis/feedback'
 
     ANALYSIS_EMAIL = '/enhancement/send-by-email'
 
-    ANALYTICS = '/analytics/confusion-matrix'
+    CONFUSION_MATRIX = '/analytics/confusion-matrix'
 
-    ANALYTICS_ID = '/analytics/confusion-matrix/{0}'
+    CONFUSION_MATRIX_ID = '/analytics/confusion-matrix/{0}'
