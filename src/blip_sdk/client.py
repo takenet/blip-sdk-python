@@ -2,7 +2,6 @@ from asyncio import Future, ensure_future, get_event_loop, iscoroutinefunction
 from time import sleep
 from typing import Any, Awaitable, Callable, Dict, List, Type
 
-import nest_asyncio
 from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
                          GuestAuthentication, KeyAuthentication, Message,
                          Notification, NotificationEvent, PlainAuthentication,
@@ -13,8 +12,6 @@ from .extensions import (AiExtension, AnalyticsExtension, ChatExtension,
                          ExtensionBase, MediaExtension)
 from .receiver import Receiver
 from .utilities import ClassUtilities
-
-nest_asyncio.apply()
 
 MAX_CONNECTION_TRY_COUNT = 10
 
@@ -226,7 +223,7 @@ class Client:
         Returns:
             Session: The connected Session
         """  # noqa: DAR402
-        return self.__ensure_run_action(self.connect_async)
+        return self.__run_async_on_sync(self.connect_async)
 
     def close(self) -> Session:
         """Close the open connection.
@@ -234,7 +231,7 @@ class Client:
         Returns:
             Session: the closed session
         """
-        return self.__ensure_run_action(self.close_async)
+        return self.__run_async_on_sync(self.close_async)
 
     def send_message(self, message: Message) -> None:
         """Send a Message.
@@ -294,7 +291,7 @@ class Client:
         Returns:
             Command: The result Command
         """
-        return self.__ensure_run_action(
+        return self.__run_async_on_sync(
             self.process_command_async,
             command,
             timeout
@@ -586,5 +583,13 @@ class Client:
     def __ensure_run_action(self, action_async: Awaitable, *args) -> Any:
         if iscoroutinefunction(action_async):
             loop = get_event_loop()
-            return loop.run_until_complete(action_async(*args))
+            return loop.create_task(action_async(*args))
         return action_async(*args)
+
+    def __run_async_on_sync(self, action_async: Awaitable, *args) -> Any:
+        loop = get_event_loop()
+        if loop.is_running():
+            raise ValueError(
+                'Cannot use sync method in async context, use the async version'  # noqa: E501
+            )
+        return loop.run_until_complete(action_async(*args))

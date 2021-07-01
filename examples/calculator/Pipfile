@@ -10,6 +10,6 @@ python_version = "3.8"
 bot = "python calculator.py"
 
 [packages]
-lime-transport-websocket = "*"
 autopep8 = "*"
 blip-sdk = {path = "./../.."}
+lime-transport-websocket = "*"
