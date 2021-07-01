@@ -269,7 +269,7 @@ class TestContentAssistantExtension:
         mocker: MockerFixture,
         target: AIExtension
     ) -> None:
-
+        # Arrange
         content_id = '1234'
 
         expected_command = Command(
@@ -285,6 +285,31 @@ class TestContentAssistantExtension:
 
         # Act
         await target.delete_content_async(content_id)
+
+        # Assert
+        expected_command.id = mock.call_args[0][0].id
+        mock.assert_called_once_with(expected_command)
+
+    @mark.asyncio
+    async def test_delete_contents_async(
+        self,
+        mocker: MockerFixture,
+        target: AIExtension
+    ) -> None:
+        # Arrange
+        expected_command = Command(
+            'delete',
+            '/content'
+        )
+        expected_command.to = AI_TO
+
+        mock = mocker.MagicMock(
+            return_value=async_return(None)
+        )
+        target.client.process_command_async = mock
+
+        # Act
+        await target.delete_contents_async()
 
         # Assert
         expected_command.id = mock.call_args[0][0].id

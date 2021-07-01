@@ -8,7 +8,7 @@ class ContentAssistantExtension(ExtensionBase):
     """Extension to handle Content Assistant Services."""
 
     async def analyse_content_async(self, analysis: dict) -> Command:
-        """Analyse content.
+        """Content Assistant: Analyse content.
 
         Args:
             analysis (dict): Content Analysis object
@@ -25,7 +25,7 @@ class ContentAssistantExtension(ExtensionBase):
         )
 
     async def match_content_async(self, combination: dict) -> Command:
-        """Match content.
+        """Content Assistant: Match content.
 
         Args:
             combination (dict): combination object
@@ -53,7 +53,7 @@ class ContentAssistantExtension(ExtensionBase):
         end_date: str = None,
         **kwargs
     ) -> Command:
-        """Get contents.
+        """Content Assistant: Get contents.
 
         Args:
             skip (int): Number of contents to be skipped.
@@ -89,7 +89,7 @@ class ContentAssistantExtension(ExtensionBase):
         )
 
     async def get_content_async(self, id: str) -> Command:
-        """Get content.
+        """Content Assistant: Get content.
 
         Args:
             id (str): Content id
@@ -104,7 +104,7 @@ class ContentAssistantExtension(ExtensionBase):
         )
 
     async def set_content_async(self, content: dict) -> Command:
-        """Create content combination.
+        """Content Assistant: Create content combination.
 
         Args:
             content (dict): Content object
@@ -125,7 +125,7 @@ class ContentAssistantExtension(ExtensionBase):
         id: str,
         content: dict
     ) -> Command:
-        """Set content result.
+        """Content Assistant: Set content result.
 
         Args:
             id (str): Content id.
@@ -147,7 +147,7 @@ class ContentAssistantExtension(ExtensionBase):
         id: str,
         combination: dict
     ) -> Command:
-        """Set content combination.
+        """Content Assistant: Set content combination.
 
         Args:
             id (str): Combination id
@@ -169,7 +169,7 @@ class ContentAssistantExtension(ExtensionBase):
         id: str,
         combinations=list
     ) -> Command:
-        """Set list of combinations.
+        """Content Assistant: Set list of combinations.
 
         Args:
             id (str): Combinations id.
@@ -190,7 +190,7 @@ class ContentAssistantExtension(ExtensionBase):
         return await self.process_command_async(combinations_command)
 
     async def delete_content_async(self, id: str) -> Command:
-        """Delete content.
+        """Content Assistant: Delete content.
 
         Args:
             id (str): Content id
@@ -201,5 +201,17 @@ class ContentAssistantExtension(ExtensionBase):
         return await self.process_command_async(
             self.create_delete_command(
                 self.build_uri(UriTemplates.CONTENT_ID, id)
+            )
+        )
+
+    async def delete_contents_async(self) -> Command:
+        """Content Assistant: Delete all contents.
+
+        Returns:
+            Command: Command response
+        """
+        return await self.process_command_async(
+            self.create_delete_command(
+                UriTemplates.CONTENT
             )
         )
