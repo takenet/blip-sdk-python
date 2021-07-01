@@ -1,7 +1,8 @@
 import asyncio
-from lime_python import Message, Identity
-from lime_python.protocol.command import Command
+
+from lime_python import Command, Identity, Message
 from lime_transport_websocket import WebSocketTransport
+
 from blip_sdk import ClientBuilder, Receiver
 
 IDENTIFIER = 'botnotificacaoworkchat'
@@ -40,7 +41,7 @@ async def message_processor_async(message: Message) -> None:
     user_id = Identity.parse_str(message.from_n)
     user_state = await get_context_async(user_id, 'user-state')
     print(user_state)
-    if user_state == 'no_content' or user_state == '0':
+    if user_state in ['no_content', '0']:
         await calculator_menu_async(user_id)
     if isinstance(message.content, int):
         print('a')
@@ -49,7 +50,8 @@ async def message_processor_async(message: Message) -> None:
 
 
 def exception(user_id: Identity, message: str):
-    message_content = 'Desculpe, não entendi, pode digitar novamento por favor?'
+    message_content = 'Desculpe, não entendi,\
+         pode digitar novamento por favor?'
     send_message_with_composing(
         user_id,
         'text/plain',
@@ -61,15 +63,20 @@ async def calculator_menu_async(user_id: Identity):
     client.send_message(
         Message(
             'text/plain',
-            '''Digite apenas a operação a ser realizada, utilizando (*) para multiplicação, (/) para divisão
-            (-) para subtração e (+) para soma''',
+            'Digite apenas a operação a ser realizada, utilizando (*)\
+            para multiplicação, (/) para divisão\
+            (-) para subtração e(+) para soma',
             to=user_id
         )
     )
     await set_context_async(user_id, 'text/plain', 'user-state', '1')
 
 
-def send_message_with_composing(user_id: Identity, message_type: str, message_content: str):
+def send_message_with_composing(
+    user_id: Identity,
+    message_type: str,
+    message_content: str
+):
     client.send_message(Message(
         to=user_id,
         type_n='application/vnd.lime.collection+json',
@@ -117,8 +124,7 @@ async def get_context_async(
     user_context = await client.process_command_async(get_context_body)
     if user_context.status == 'success':
         return user_context.resource
-    else:
-        return 'no_content'
+    return 'no_content'
 
 
 loop = asyncio.get_event_loop()
