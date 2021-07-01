@@ -1,23 +1,23 @@
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
-from src import AiAnalyticsExtension
+from src import AIExtension
 from ....async_mock import async_return
 
 AI_TO = 'postmaster@ai.msging.net'
 
 
-class TestAiAnalyticsExtension:
+class TestAIAnalyticsExtension:
 
     @fixture
-    def target(self, mocker: MockerFixture) -> AiAnalyticsExtension:
-        yield AiAnalyticsExtension(mocker.MagicMock(), 'msging.net')
+    def target(self, mocker: MockerFixture) -> AIExtension:
+        yield AIExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_analysis_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         uri = '/analysis?$skip=0&$take=100&$ascending=True'
@@ -42,7 +42,7 @@ class TestAiAnalyticsExtension:
     async def test_analyse_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         mock = mocker.MagicMock(
@@ -68,7 +68,7 @@ class TestAiAnalyticsExtension:
     async def test_send_analysis_by_email_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         email = 'test@take.net'
@@ -101,7 +101,7 @@ class TestAiAnalyticsExtension:
     async def test_set_analysis_feedback_dict_feedback_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         analysis_feedback = {
@@ -132,7 +132,7 @@ class TestAiAnalyticsExtension:
     async def test_set_analysis_feedback_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         analysis_id = '1234'
@@ -169,7 +169,7 @@ class TestAiAnalyticsExtension:
     async def test_get_confusion_matrix_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         analytics_id = '1234'
@@ -194,7 +194,7 @@ class TestAiAnalyticsExtension:
     async def test_set_confusion_matrix_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         resource = {
@@ -224,7 +224,7 @@ class TestAiAnalyticsExtension:
     async def test_delete_confusion_matrix_async(
         self,
         mocker: MockerFixture,
-        target: AiAnalyticsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         analytics_id = '1234'

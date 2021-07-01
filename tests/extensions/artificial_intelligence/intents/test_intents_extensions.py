@@ -1,7 +1,7 @@
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
-from src import IntentsExtension
+from src import AIExtension
 from ....async_mock import async_return
 
 AI_TO = 'postmaster@ai.msging.net'
@@ -10,14 +10,14 @@ AI_TO = 'postmaster@ai.msging.net'
 class TestIntentsExtension:
 
     @fixture
-    def target(self, mocker: MockerFixture) -> IntentsExtension:
-        yield IntentsExtension(mocker.MagicMock(), 'msging.net')
+    def target(self, mocker: MockerFixture) -> AIExtension:
+        yield AIExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_intent_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'
@@ -40,7 +40,7 @@ class TestIntentsExtension:
     async def test_get_intents_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_uri = '/intentions?$skip=0&$take=100&deep=True&$ascending=False'
@@ -62,7 +62,7 @@ class TestIntentsExtension:
     async def test_set_intent(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_resource = {
@@ -91,7 +91,7 @@ class TestIntentsExtension:
     async def test_set_intents(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intents = [
@@ -126,7 +126,7 @@ class TestIntentsExtension:
     async def test_merge_intent(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent = {
@@ -155,7 +155,7 @@ class TestIntentsExtension:
     async def test_merge_intents(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intents = [
@@ -190,7 +190,7 @@ class TestIntentsExtension:
     async def test_delete_intent_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'
@@ -215,7 +215,7 @@ class TestIntentsExtension:
     async def test_delete_intents_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         expected_command = Command(
@@ -239,7 +239,7 @@ class TestIntentsExtension:
     async def test_get_intent_answers_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'
@@ -264,7 +264,7 @@ class TestIntentsExtension:
     async def test_set_intent_answers_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'
@@ -301,7 +301,7 @@ class TestIntentsExtension:
     async def test_delete_intent_answers_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'
@@ -327,7 +327,7 @@ class TestIntentsExtension:
     async def test_get_intent_questions_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'
@@ -352,7 +352,7 @@ class TestIntentsExtension:
     async def test_set_intent_questions_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'
@@ -391,7 +391,7 @@ class TestIntentsExtension:
     async def test_delete_intent_question_async(
         self,
         mocker: MockerFixture,
-        target: IntentsExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         intent_id = '1234'

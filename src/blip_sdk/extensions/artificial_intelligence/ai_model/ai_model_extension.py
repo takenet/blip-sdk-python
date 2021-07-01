@@ -1,23 +1,11 @@
-from __future__ import annotations
-from typing import TYPE_CHECKING
 from lime_python import Command
 from ...extension_base import ExtensionBase
 from .content_type import ContentType
 from .uri_templates import UriTemplates
 
-if TYPE_CHECKING:
-    from ....client import Client
 
-POSTMASTER_AI = 'postmaster@ai'
-
-
-class AiModelExtension(ExtensionBase):
+class AIModelExtension(ExtensionBase):
     """Extension to handle Blip Analytics Services."""
-
-    def __init__(self, client: Client, domain: str) -> None:
-        super().__init__(client, f'{POSTMASTER_AI}.{domain}')
-
-    # Model
 
     async def get_models_async(
         self,

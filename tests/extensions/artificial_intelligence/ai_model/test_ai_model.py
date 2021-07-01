@@ -1,23 +1,23 @@
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
-from src import AiModelExtension
+from src import AIExtension
 from ....async_mock import async_return
 
 AI_TO = 'postmaster@ai.msging.net'
 
 
-class TestAiModelExtension:
+class TestAIModelExtension:
 
     @fixture
-    def target(self, mocker: MockerFixture) -> AiModelExtension:
-        yield AiModelExtension(mocker.MagicMock(), 'msging.net')
+    def target(self, mocker: MockerFixture) -> AIExtension:
+        yield AIExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_models_async(
         self,
         mocker: MockerFixture,
-        target: AiModelExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         expected_command = Command(
@@ -43,7 +43,7 @@ class TestAiModelExtension:
     async def test_get_model_async(
         self,
         mocker: MockerFixture,
-        target: AiModelExtension
+        target: AIExtension
     ) -> None:
         # Assert
         model_id = '1234'
@@ -70,7 +70,7 @@ class TestAiModelExtension:
     async def test_get_model_summary_async(
         self,
         mocker: MockerFixture,
-        target: AiModelExtension
+        target: AIExtension
     ) -> None:
         # Assert
         expected_command = Command(
@@ -95,7 +95,7 @@ class TestAiModelExtension:
     async def test_get_last_trained_or_published_model_async(
         self,
         mocker: MockerFixture,
-        target: AiModelExtension
+        target: AIExtension
     ) -> None:
         # Assert
         expected_command = Command(
@@ -120,7 +120,7 @@ class TestAiModelExtension:
     async def test_train_model_async(
         self,
         mocker: MockerFixture,
-        target: AiModelExtension
+        target: AIExtension
     ) -> None:
         # Assert
         expected_command = Command(
@@ -147,7 +147,7 @@ class TestAiModelExtension:
     async def test_publish_model_async(
         self,
         mocker: MockerFixture,
-        target: AiModelExtension
+        target: AIExtension
     ) -> None:
         # Assert
         model_id = '1234'

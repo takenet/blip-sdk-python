@@ -1,7 +1,7 @@
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
-from src import WordSetExtension
+from src import AIExtension
 from ....async_mock import async_return
 
 AI_TO = 'postmaster@ai.msging.net'
@@ -10,14 +10,14 @@ AI_TO = 'postmaster@ai.msging.net'
 class TestWordSetExtension:
 
     @fixture
-    def target(self, mocker: MockerFixture) -> WordSetExtension:
-        yield WordSetExtension(mocker.MagicMock(), 'msging.net')
+    def target(self, mocker: MockerFixture) -> AIExtension:
+        yield AIExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_word_set_async(
         self,
         mocker: MockerFixture,
-        target: WordSetExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         word_set_id = '1234'
@@ -42,7 +42,7 @@ class TestWordSetExtension:
     async def test_set_word_set_resource_async(
         self,
         mocker: MockerFixture,
-        target: WordSetExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         word_set_id = '1234'
@@ -78,7 +78,7 @@ class TestWordSetExtension:
     async def test_set_word_set_async(
         self,
         mocker: MockerFixture,
-        target: WordSetExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         item = {
@@ -107,7 +107,7 @@ class TestWordSetExtension:
     async def test_analyse_word_set_async(
         self,
         mocker: MockerFixture,
-        target: WordSetExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         item = {
@@ -136,7 +136,7 @@ class TestWordSetExtension:
     async def test_delete_word_set_async(
         self,
         mocker: MockerFixture,
-        target: WordSetExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         word_set_id = '1234'

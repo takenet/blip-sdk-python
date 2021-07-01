@@ -1,7 +1,7 @@
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
-from src import EntitiesExtension
+from src import AIExtension
 from ....async_mock import async_return
 
 AI_TO = 'postmaster@ai.msging.net'
@@ -10,14 +10,14 @@ AI_TO = 'postmaster@ai.msging.net'
 class TestEntitiesExtension:
 
     @fixture
-    def target(self, mocker: MockerFixture) -> EntitiesExtension:
-        yield EntitiesExtension(mocker.MagicMock(), 'msging.net')
+    def target(self, mocker: MockerFixture) -> AIExtension:
+        yield AIExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_get_entity_async(
         self,
         mocker: MockerFixture,
-        target: EntitiesExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         entitie_id = '1234'
@@ -44,7 +44,7 @@ class TestEntitiesExtension:
     async def test_set_entity_async(
         self,
         mocker: MockerFixture,
-        target: EntitiesExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         entity_resource = {
@@ -93,7 +93,7 @@ class TestEntitiesExtension:
     async def test_delete_entity(
         self,
         mocker: MockerFixture,
-        target: EntitiesExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         entitie_id = '1234'
@@ -120,7 +120,7 @@ class TestEntitiesExtension:
     async def test_delete_entities(
         self,
         mocker: MockerFixture,
-        target: EntitiesExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         expected_command = Command(

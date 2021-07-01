@@ -1,7 +1,7 @@
 from lime_python import Command
 from pytest import fixture, mark
 from pytest_mock import MockerFixture
-from src import ContentAssistantExtension
+from src import AIExtension
 from ....async_mock import async_return
 
 AI_TO = 'postmaster@ai.msging.net'
@@ -10,14 +10,14 @@ AI_TO = 'postmaster@ai.msging.net'
 class TestContentAssistantExtension:
 
     @fixture
-    def target(self, mocker: MockerFixture) -> ContentAssistantExtension:
-        yield ContentAssistantExtension(mocker.MagicMock(), 'msging.net')
+    def target(self, mocker: MockerFixture) -> AIExtension:
+        yield AIExtension(mocker.MagicMock(), 'msging.net')
 
     @mark.asyncio
     async def test_analyse_content_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
         # Arrange
 
@@ -51,7 +51,7 @@ class TestContentAssistantExtension:
     async def test_match_content_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
 
         combinations_object = [{
@@ -85,7 +85,7 @@ class TestContentAssistantExtension:
     async def test_get_contents_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
         uri = '/content?$skip=0&$take=100&$ascending=False'
 
@@ -109,7 +109,7 @@ class TestContentAssistantExtension:
     async def test_get_content_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
 
         content_id = '1234'
@@ -136,7 +136,7 @@ class TestContentAssistantExtension:
     async def test_set_content_result_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
 
         # Arrange
@@ -186,7 +186,7 @@ class TestContentAssistantExtension:
     async def test_set_content_combination_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         content_id = '1234'
@@ -225,7 +225,7 @@ class TestContentAssistantExtension:
     async def test_set_content_combinations_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
         # Arrange
         content_id = '1234'
@@ -267,7 +267,7 @@ class TestContentAssistantExtension:
     async def test_delete_content_async(
         self,
         mocker: MockerFixture,
-        target: ContentAssistantExtension
+        target: AIExtension
     ) -> None:
 
         content_id = '1234'
