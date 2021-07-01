@@ -146,32 +146,35 @@ class AIAnalyticsExtension(ExtensionBase):
 
     async def set_analysis_feedback_async(
         self,
-        feedback: str | dict,
-        analysis_id: str = None,
-        intent_id: str = None
+        analysis_id: str,
+        intent_id: str = None,
+        feedback: str = None
     ) -> Command:
         """Send feedbacks into analysis.
 
         Args:
-            feedback (str | dict): feedback type or object
+            feedback (str): feedback type
             analysis_id (str): the analysis id
             intent_id (str): the intent id
 
         Returns:
             Command: Command response
         """
-        uri = UriTemplates.ANALYSIS_FEEDBACK
-        resource = feedback
+        uri: str
+        resource: dict
 
-        if analysis_id:
+        if feedback:
             uri = self.build_uri(
                 UriTemplates.ANALYSIS_ID_FEEDBACK,
                 analysis_id
             )
             resource = {'feedback': feedback}
+        else:
+            uri = UriTemplates.ANALYSIS_FEEDBACK
+            resource = {'analysisId': analysis_id}
 
-            if intent_id:
-                resource.update({'intentionId': intent_id})
+        if intent_id:
+            resource.update({'intentionId': intent_id})
 
         analyses_feedback_command = self.create_set_command(
             uri,
