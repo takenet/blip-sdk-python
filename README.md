@@ -39,7 +39,7 @@ from lime_transport_websocket import WebSocketTransport
 from blip_sdk import ClientBuilder
 
 
-async def main_async():
+async def main_async() -> None:
     # Create a client instance passing the identifier and access key of your chatbot
     client = ClientBuilder() \
         .with_identifier(IDENTIFIER) \
@@ -65,7 +65,7 @@ from lime_transport_websocket import WebSocketTransport
 from blip_sdk import ClientBuilder
 
 
-def main():
+def main() -> None:
     # Create a client instance passing the identifier and access key of your chatbot
     client = ClientBuilder() \
         .with_identifier(IDENTIFIER) \
@@ -93,21 +93,6 @@ await client.close_async()
 client.close()
 ```
 
-You can also connect synchronously with the server
-```python
-def main():
-    # Create a client instance passing the identifier and access key of your chatbot
-    client = ClientBuilder() \
-        .with_identifier(identifier) \
-        .with_access_key(access_key) \
-        .with_transport_factory(lambda: WebSocketTransport()) \
-        .build()
-
-    # Connect with the server asynchronously
-    # Connection will occurr via websocket on the 8081 port
-    client.connect()
-```
-
 ### Receiving
 
 All messages sent to the chatbot are redirected to registered `receivers` of messages and notifications. You can define filters to specify which envelopes will be handled by each receiver.
@@ -127,7 +112,7 @@ It's also possible to use a custom function as a filter:
 Example of a message receiver filtering by the originator:
 
 ```python
-def filter_originator(message: Message):
+def filter_originator(message: Message) -> bool:
     return message.from_n == '553199990000@0mn.io'
 
 client.add_message_receiver(Receiver(filter_originator, lambda m: print(m)))
