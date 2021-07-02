@@ -33,17 +33,55 @@ You will need an `identifier` and an `access key` to connect a chatbot to **BLiP
 In order to instantiate the client use the `ClientBuilder` class informing the `identifier` and `access key`:
 
 ```python
+import asyncio
+
+from lime_transport_websocket import WebSocketTransport
+from blip_sdk import ClientBuilder
+
+
 async def main_async():
     # Create a client instance passing the identifier and access key of your chatbot
     client = ClientBuilder() \
-        .with_identifier(identifier) \
-        .with_access_key(access_key) \
+        .with_identifier(IDENTIFIER) \
+        .with_access_key(ACCESS_KEY) \
         .with_transport_factory(lambda: WebSocketTransport()) \
         .build()
 
     # Connect with the server asynchronously
     # Connection will occurr via websocket on the 8081 port
     await client.connect_async()
+    print('Application started. Press Ctrl + c to stop.')
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main_async())
+loop.run_forever()
+```
+
+Or the sync version (ideal for scripts)
+
+```python
+from time import sleep
+from lime_transport_websocket import WebSocketTransport
+from blip_sdk import ClientBuilder
+
+
+def main():
+    # Create a client instance passing the identifier and access key of your chatbot
+    client = ClientBuilder() \
+        .with_identifier(IDENTIFIER) \
+        .with_access_key(ACCESS_KEY) \
+        .with_transport_factory(lambda: WebSocketTransport()) \
+        .build()
+
+    # Connect with the server asynchronously
+    # Connection will occurr via websocket on the 8081 port
+    client.connect()
+    print('Application started. Press Ctrl + c to stop.')
+
+main()
+
+while True:
+    sleep(1)
 ```
 
 Each `client` instance represents a server connection and can be reused. To close a connection:
@@ -54,6 +92,7 @@ await client.close_async()
 # or sync
 client.close()
 ```
+
 You can also connect synchronously with the server
 ```python
 def main():
@@ -68,6 +107,7 @@ def main():
     # Connection will occurr via websocket on the 8081 port
     client.connect()
 ```
+
 ### Receiving
 
 All messages sent to the chatbot are redirected to registered `receivers` of messages and notifications. You can define filters to specify which envelopes will be handled by each receiver.
@@ -88,7 +128,7 @@ Example of a message receiver filtering by the originator:
 
 ```python
 def filter_originator(message: Message):
-    return message.from == '553199990000@0mn.io'
+    return message.from_n == '553199990000@0mn.io'
 
 client.add_message_receiver(Receiver(filter_originator, lambda m: print(m)))
 ```
