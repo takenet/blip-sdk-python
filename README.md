@@ -33,7 +33,7 @@ You will need an `identifier` and an `access key` to connect a chatbot to **BLiP
 In order to instantiate the client use the `ClientBuilder` class informing the `identifier` and `access key`:
 
 ```python
-def main_async():
+async def main_async():
     # Create a client instance passing the identifier and access key of your chatbot
     client = ClientBuilder() \
         .with_identifier(identifier) \
