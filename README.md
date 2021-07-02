@@ -30,7 +30,11 @@ You will need an `identifier` and an `access key` to connect a chatbot to **BLiP
 - Go to **Settings** and click in **Connection Information**;
 - Get your bot's `identifier` and `access key`.
 
-In order to instantiate the client use the `ClientBuilder` class informing the `identifier` and `access key`:
+In order to instantiate the client use the `ClientBuilder` class informing the `identifier` and `access key`
+
+You can start the client asynchronously or synchronously
+
+> Asynchronously (the recommended way)
 
 ```python
 import asyncio
@@ -57,7 +61,7 @@ loop.run_until_complete(main_async())
 loop.run_forever()
 ```
 
-Or the sync version (ideal for scripts)
+> Or the sync version (we only recommend for scripts)
 
 ```python
 from time import sleep
