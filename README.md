@@ -157,4 +157,4 @@ client.send_notification(notiication)
 
 ## Contributing
 
-For information on how to contribute to this package, please refer to our [Contribution guidelines](https://github.com/takenet/blip-sdk-js/blob/master/CONTRIBUTING.md).
+For information on how to contribute to this package, please refer to our [Contribution guidelines](https://github.com/takenet/blip-sdk-python/blob/master/CONTRIBUTING.md).
