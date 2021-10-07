@@ -9,7 +9,7 @@ from lime_python import (ClientChannel, Command, CommandMethod, Envelope,
 
 from .application import Application
 from .extensions import (AIExtension, AnalyticsExtension, ChatExtension,
-                         ExtensionBase, MediaExtension)
+                         ContextsExtension, ExtensionBase, MediaExtension)
 from .receiver import Receiver
 from .utilities import ClassUtilities
 
@@ -73,6 +73,13 @@ class Client:
     def analytics_extension(self) -> AnalyticsExtension:  # noqa: D102
         return self.__get_extension(
             AnalyticsExtension,
+            self.application.domain
+        )
+
+    @property
+    def context_extension(self) -> ContextsExtension:  # noqa: D102
+        return self.__get_extension(
+            ContextsExtension,
             self.application.domain
         )
 
